@@ -24,7 +24,7 @@ namespace AdventOfCode2016.Day01
 
 		public void Go()
 		{
-			AddCheckPosition();
+			AddAndCheckPosition();
 			foreach (var instruction in instructions)
 			{
 				UpdateDirection(instruction[0]);
@@ -97,11 +97,11 @@ namespace AdventOfCode2016.Day01
 						position.X--;
 						break;
 				}
-				AddCheckPosition();
+				AddAndCheckPosition();
 			}
 		}
 
-		private void AddCheckPosition()
+		private void AddAndCheckPosition()
 		{
 			if (realPosition == null)
 			{
