@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 
 namespace AdventOfCode2016
 {
@@ -43,6 +44,10 @@ namespace AdventOfCode2016
 					case 5:
 						var day05 = new Day05.Day05();
 						day05.Go();
+						break;
+					case 6:
+						var day06 = new Day06.Day06();
+						day06.Go();
 						break;
 					default:
 						Console.WriteLine("Not yet implemented.");
