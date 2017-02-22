@@ -49,6 +49,10 @@ namespace AdventOfCode2016
 						var day06 = new Day06.Day06();
 						day06.Go();
 						break;
+					case 7:
+						var day07 = new Day07.Day07();
+						day07.Go();
+						break;
 					default:
 						Console.WriteLine("Not yet implemented.");
 						break;
