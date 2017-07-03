@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace AdventOfCode2016.Day04
 {
-    public class Day04
+    public class Day04 : IDay
     {
 		private List<Room> rooms;
 

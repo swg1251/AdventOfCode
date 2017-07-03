@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reflection;
 
 namespace AdventOfCode2016
 {
@@ -15,6 +14,7 @@ namespace AdventOfCode2016
 			Console.WriteLine("Welcome to Advent of Code 2016");
 			Console.WriteLine("Which day would you like to run?");
 			var dayInput = Console.ReadLine();
+			Console.WriteLine();
 
 			int day;
 			if (!int.TryParse(dayInput, out day) || day < 1 || day > 25)
@@ -23,40 +23,12 @@ namespace AdventOfCode2016
 			}
 			else
 			{
-				switch (day)
-				{
-					case 1:
-						var day01 = new Day01.Day01();
-						day01.Go();
-						break;
-					case 2:
-						var day02 = new Day02.Day02();
-						day02.Go();
-						break;
-					case 3:
-						var day03 = new Day03.Day03();
-						day03.Go();
-						break;
-					case 4:
-						var day04 = new Day04.Day04();
-						day04.Go();
-						break;
-					case 5:
-						var day05 = new Day05.Day05();
-						day05.Go();
-						break;
-					case 6:
-						var day06 = new Day06.Day06();
-						day06.Go();
-						break;
-					case 7:
-						var day07 = new Day07.Day07();
-						day07.Go();
-						break;
-					default:
-						Console.WriteLine("Not yet implemented.");
-						break;
-				}
+				var dayString = day < 10 ? $"0{day}" : day.ToString();
+				var dayType = Type.GetType($"AdventOfCode2016.Day{dayString}.Day{dayString}");
+				var dayInstance = (IDay)Activator.CreateInstance(dayType ?? typeof(DayNotImplemented));
+
+				dayInstance.Go();
+				Console.WriteLine();
 			}
 			Startup();
 		}

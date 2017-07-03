@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace AdventOfCode2016.Day07
 {
-    public class Day07
+    public class Day07 : IDay
     {
 		public List<IpAddress> IpAddressses { get; set; }
 		public Day07()

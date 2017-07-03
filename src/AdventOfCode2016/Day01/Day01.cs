@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace AdventOfCode2016.Day01
 {
-    public class Day01
+    public class Day01 : IDay
     {
 		private Direction currentDirection;
 		private string[] instructions;

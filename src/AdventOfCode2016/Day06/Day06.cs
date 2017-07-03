@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace AdventOfCode2016.Day06
 {
-    public class Day06
+    public class Day06 : IDay
     {
 		private List<Dictionary<char, int>> columns;
 		private char[] message;

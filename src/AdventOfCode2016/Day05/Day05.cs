@@ -4,7 +4,7 @@ using System.Text;
 
 namespace AdventOfCode2016.Day05
 {
-    public class Day05
+    public class Day05 : IDay
     {
 		private string input;
 		private string password;

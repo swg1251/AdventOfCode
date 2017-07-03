@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace AdventOfCode2016.Day02
 {
-    public class Day02
+    public class Day02 : IDay
     {
 		private string[][] keypad;
 		private string[][] keypad2;

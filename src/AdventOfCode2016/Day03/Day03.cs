@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace AdventOfCode2016.Day03
 {
-    public class Day03
+    public class Day03 : IDay
     {
 		private List<string> triangleLines;
 		private List<List<int>> triangles;
