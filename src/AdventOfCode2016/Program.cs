@@ -7,8 +7,12 @@ namespace AdventOfCode2016
         public static void Main(string[] args)
         {
             Console.WriteLine("Welcome to Advent of Code 2016");
-            Console.WriteLine("Which day would you like to run?");
+            Console.WriteLine("Which day would you like to run? (type q to quit)");
             var dayInput = Console.ReadLine();
+            if (dayInput == "q")
+            {
+                return;
+            }
             Console.WriteLine();
 
             int day;
