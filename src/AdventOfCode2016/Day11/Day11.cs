@@ -98,6 +98,8 @@ namespace AdventOfCode2016.Day11
             }
         }
 
+        // TODO: come up with a better way of comparing state equality that is still fast, but allows
+        // better pruning to reduce search space. Current method takes a few minutes to complete :(
         private string GetStateString(State state)
         {
             var sb = new StringBuilder();
