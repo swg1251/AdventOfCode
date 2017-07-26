@@ -19,10 +19,11 @@ namespace AdventOfCode2016
             else
             {
                 var dayString = day < 10 ? $"0{day}" : day.ToString();
-                var dayType = Type.GetType($"AdventOfCode2016.Day{dayString}.Day{dayString}");
+                var dayType = Type.GetType($"AdventOfCode2016.Day{dayString}");
                 var dayInstance = (IDay)Activator.CreateInstance(dayType ?? typeof(DayNotImplemented));
 
-                dayInstance.Go();
+                dayInstance.GetInput();
+                dayInstance.Solve();
                 Console.WriteLine();
             }
             Main(null);

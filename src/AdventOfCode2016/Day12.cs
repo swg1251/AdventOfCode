@@ -3,19 +3,26 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace AdventOfCode2016.Day12
+namespace AdventOfCode2016
 {
     public class Day12 : IDay
     {
         private Dictionary<char, int> registers { get; set; }
-        private bool PartTwo { get; set; }
-        public void Go()
+        private bool part2 { get; set; }
+        private List<string> instructions { get; set; }
+
+        public void GetInput()
+        {
+            instructions = File.ReadAllLines("input/day12.txt").Where(l => !string.IsNullOrWhiteSpace(l)).ToList();
+        }
+
+        public void Solve()
         {
             InitializeRegisters();
             ProcessInstructions();
             Console.WriteLine($"The value in register 'a' is {registers['a']} (part one)");
 
-            PartTwo = true;
+            part2 = true;
             InitializeRegisters();
             ProcessInstructions();
             Console.WriteLine($"The value in register 'a' is {registers['a']} (part two)");
@@ -26,14 +33,12 @@ namespace AdventOfCode2016.Day12
             registers = new Dictionary<char, int>();
             registers['a'] = 0;
             registers['b'] = 0;
-            registers['c'] = PartTwo ? 1 : 0;
+            registers['c'] = part2 ? 1 : 0;
             registers['d'] = 0;
         }
 
         private void ProcessInstructions()
         {
-            var instructions = File.ReadAllLines("Day12/input.txt").Where(l => !string.IsNullOrWhiteSpace(l)).ToList();
-
             for (int i = 0; i < instructions.Count(); i++)
             {
                 var instructionParts = instructions[i].Split(' ');

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace AdventOfCode2016.Day03
+namespace AdventOfCode2016
 {
     public class Day03 : IDay
     {
@@ -15,10 +15,14 @@ namespace AdventOfCode2016.Day03
 		{
 			triangles = new List<List<int>>();
 			triangles2 = new List<List<int>>();
-			triangleLines = File.ReadAllLines("Day03/input.txt").Where(l => !string.IsNullOrWhiteSpace(l)).ToList();
 		}
 
-		public void Go()
+        public void GetInput()
+        {
+            triangleLines = File.ReadAllLines("input/day03.txt").Where(l => !string.IsNullOrWhiteSpace(l)).ToList();
+        }
+
+		public void Solve()
 		{
 			GetTriangles();
 			var validTriangles = triangles.Count(t => IsValid(t));

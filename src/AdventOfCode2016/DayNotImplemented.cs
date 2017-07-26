@@ -6,7 +6,12 @@ namespace AdventOfCode2016
 {
     public class DayNotImplemented : IDay
     {
-		public void Go()
+        public void GetInput()
+        {
+
+        }
+
+		public void Solve()
 		{
 			Console.WriteLine("Day not yet implemented.");
 		}

@@ -1,14 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace AdventOfCode2016.Day08
+namespace AdventOfCode2016
 {
     public class Day08 : IDay
     {
         private const int SCREEN_HEIGHT = 6;
         private const int SCREEN_WIDTH = 50;
         private const int LETTER_WIDTH = 5;
+
+        private IEnumerable<string> instructions { get; set; }
 
         public bool[,] Screen { get; set; }
         public int ActivatedPixelCount { get; set; }
@@ -19,9 +22,14 @@ namespace AdventOfCode2016.Day08
             ActivatedPixelCount = 0;
         }
 
-        public void Go()
+        public void GetInput()
         {
-            foreach (var line in File.ReadAllLines("Day08/input.txt").Where(l => !string.IsNullOrWhiteSpace(l)))
+            instructions = File.ReadAllLines("input/day08.txt").Where(l => !string.IsNullOrWhiteSpace(l));
+        }
+
+        public void Solve()
+        {
+            foreach (var line in instructions)
             {
                 ProcessInstruction(line);
             }

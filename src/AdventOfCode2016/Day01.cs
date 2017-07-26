@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace AdventOfCode2016.Day01
+namespace AdventOfCode2016
 {
     public class Day01 : IDay
     {
@@ -15,14 +15,18 @@ namespace AdventOfCode2016.Day01
 
 		public Day01()
 		{
-			var instructionsFile = File.OpenText("Day01/input.txt");
-			instructions = instructionsFile.ReadLine().Replace(" ", "").Split(',');
 			currentDirection = Direction.NORTH;
 			position = new Position();
 			visitedPositions = new List<Position>();
 		}
 
-		public void Go()
+        public void GetInput()
+        {
+            var instructionsFile = File.OpenText("input/day01.txt");
+            instructions = instructionsFile.ReadLine().Replace(" ", "").Split(',');
+        }
+
+		public void Solve()
 		{
 			AddAndCheckPosition();
 			foreach (var instruction in instructions)
@@ -120,5 +124,20 @@ namespace AdventOfCode2016.Day01
 		{
 			return Math.Abs(destination.X) + Math.Abs(destination.Y);
 		}
+
+        internal enum Direction
+        {
+            NORTH,
+            EAST,
+            SOUTH,
+            WEST
+        }
+
+        internal class Position
+        {
+            public int X { get; set; } = 0;
+            public int Y { get; set; } = 0;
+        }
     }
+    
 }

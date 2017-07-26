@@ -1,8 +1,10 @@
 ﻿using System;
+using System.IO;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace AdventOfCode2016.Day05
+namespace AdventOfCode2016
 {
     public class Day05 : IDay
     {
@@ -12,12 +14,16 @@ namespace AdventOfCode2016.Day05
 
 		public Day05()
 		{
-			input = "ojvtpuvg";
 			password = "";
 			password2 = new char[8];
 		}
 
-		public void Go()
+        public void GetInput()
+        {
+            input = File.ReadAllLines("input/day05.txt").Where(l => !string.IsNullOrEmpty(l)).First();
+        }
+
+		public void Solve()
 		{
 			GetPasswords();
 			Console.WriteLine($"The password (part 1) is: {password.Substring(0, 8)}");

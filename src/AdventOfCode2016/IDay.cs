@@ -2,6 +2,7 @@
 {
     public interface IDay
     {
-		void Go();
+        void GetInput();
+        void Solve();
     }
 }

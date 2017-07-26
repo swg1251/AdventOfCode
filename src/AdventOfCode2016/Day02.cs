@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace AdventOfCode2016.Day02
+namespace AdventOfCode2016
 {
     public class Day02 : IDay
     {
@@ -35,16 +35,19 @@ namespace AdventOfCode2016.Day02
 			position = new Position { X = 1, Y = 1 };
 			position2 = new Position { X = 0, Y = 2 };
 
-			instructions = File.ReadAllLines("Day02/input.txt")
-				.Where(l => !string.IsNullOrEmpty(l))
-				.Select(l => l.Replace("\n", "").ToCharArray())
-				.ToList();
-
 			combination = "";
 			combination2 = "";
 		}
 
-		public void Go()
+        public void GetInput()
+        {
+            instructions = File.ReadAllLines("input/day02.txt")
+                .Where(l => !string.IsNullOrEmpty(l))
+                .Select(l => l.Replace("\n", "").ToCharArray())
+                .ToList();
+        }
+
+		public void Solve()
 		{
 			foreach (var instruction in instructions)
 			{
@@ -125,5 +128,11 @@ namespace AdventOfCode2016.Day02
 				position2.Y--;
 			}
 		}
-	}
+
+        internal class Position
+        {
+            public int X { get; set; } = 0;
+            public int Y { get; set; } = 0;
+        }
+    }
 }
