@@ -24,6 +24,9 @@ namespace AdventOfCode2016
 
 		private void Search()
 		{
+			var shortestPathFound = false;
+			var solutions = new List<string>();
+
 			var queue = new Queue<State>();
 			queue.Enqueue(new State(0, 0, ""));
 
@@ -33,8 +36,14 @@ namespace AdventOfCode2016
 
 				if (currentState.IsGoal())
 				{
-					Console.WriteLine($"Reached the goal in {currentState.Path.Length} steps (part one). Path: {currentState.Path}");
-					return;
+					if (!shortestPathFound)
+					{
+						Console.WriteLine($"Reached the goal in {currentState.Path.Length} steps (part one). Path: {currentState.Path}");
+					}
+					shortestPathFound = true;
+
+					solutions.Add(currentState.Path);
+					continue;
 				}
 
 				foreach (var state in currentState.GetNewStates())
@@ -42,6 +51,8 @@ namespace AdventOfCode2016
 					queue.Enqueue(state);
 				}
 			}
+
+			Console.WriteLine($"The longest solution path (part two) is {solutions.Max(p => p.Length)} steps long.");
 		}
 
 		private static string Hash(string input)
