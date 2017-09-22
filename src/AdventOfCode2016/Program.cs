@@ -9,7 +9,7 @@ namespace AdventOfCode2016
             Console.WriteLine("Welcome to Advent of Code 2016");
             Console.WriteLine("Which day would you like to run? (type q to quit)");
             var dayInput = Console.ReadLine();
-            if (dayInput == "q")
+            if (dayInput.ToLower() == "q")
             {
                 return;
             }
