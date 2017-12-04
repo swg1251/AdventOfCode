@@ -12,4 +12,8 @@
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="2017\input\" />
+  </ItemGroup>
+
 </Project>
