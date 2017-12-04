@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace AdventOfCode2016
+namespace AdventOfCode.Year2016
 {
     public class Day07 : IDay
     {
@@ -15,7 +15,7 @@ namespace AdventOfCode2016
 
         public void GetInput()
         {
-            var inputLines = File.ReadAllLines("input/day07.txt")
+            var inputLines = File.ReadAllLines("2016/input/day07.txt")
                 .Where(l => !string.IsNullOrWhiteSpace(l))
                 .Select(l => l.Replace("\n", ""));
 

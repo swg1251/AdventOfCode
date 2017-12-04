@@ -6,7 +6,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace AdventOfCode2016
+namespace AdventOfCode.Year2016
 {
     public class Day14 : IDay
     {
@@ -18,7 +18,7 @@ namespace AdventOfCode2016
 
         public void GetInput()
         {
-            salt = File.ReadAllLines("input/day14.txt").Where(l => !string.IsNullOrWhiteSpace(l)).First();
+            salt = File.ReadAllLines("2016/input/day14.txt").Where(l => !string.IsNullOrWhiteSpace(l)).First();
         }
 
         public void Solve()

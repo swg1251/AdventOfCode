@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace AdventOfCode2016
+namespace AdventOfCode.Year2016
 {
     public class Day03 : IDay
     {
@@ -19,7 +19,7 @@ namespace AdventOfCode2016
 
         public void GetInput()
         {
-            triangleLines = File.ReadAllLines("input/day03.txt").Where(l => !string.IsNullOrWhiteSpace(l)).ToList();
+            triangleLines = File.ReadAllLines("2016/input/day03.txt").Where(l => !string.IsNullOrWhiteSpace(l)).ToList();
         }
 
 		public void Solve()

@@ -1,4 +1,4 @@
-﻿namespace AdventOfCode2016
+﻿namespace AdventOfCode
 {
     public interface IDay
     {

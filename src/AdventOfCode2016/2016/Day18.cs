@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace AdventOfCode2016
+namespace AdventOfCode.Year2016
 {
     public class Day18 : IDay
     {
@@ -13,7 +13,7 @@ namespace AdventOfCode2016
 			rows = new List<List<bool>>();
 			var firstRow = new List<bool>();
 
-			var input = File.ReadAllLines("input/day18.txt").Where(l => !string.IsNullOrWhiteSpace(l)).First();
+			var input = File.ReadAllLines("2016/input/day18.txt").Where(l => !string.IsNullOrWhiteSpace(l)).First();
 			foreach (var tile in input)
 			{
 				firstRow.Add(tile == '^');

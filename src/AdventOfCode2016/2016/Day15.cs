@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace AdventOfCode2016
+namespace AdventOfCode.Year2016
 {
     public class Day15 : IDay
     {
@@ -11,7 +11,7 @@ namespace AdventOfCode2016
 		public void GetInput()
 		{
 			discs = new List<Disc>();
-			foreach (var line in File.ReadAllLines("input/day15.txt").Where(l => !string.IsNullOrWhiteSpace(l)))
+			foreach (var line in File.ReadAllLines("2016/input/day15.txt").Where(l => !string.IsNullOrWhiteSpace(l)))
 			{
 				var words = line.Split(' ');
 				discs.Add(new Disc(Convert.ToInt32(words[3]), Convert.ToInt32(words[11].Split('.')[0])));

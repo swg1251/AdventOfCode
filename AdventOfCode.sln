@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.9
+VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{72CADDC1-537E-4C17-A3AA-23399D183D0B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{76D025BE-29E3-4903-8587-AEB045A4EF12}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdventOfCode2016", "src\AdventOfCode2016\AdventOfCode2016.csproj", "{01B296C7-8855-45AD-BD40-F44807EED5C3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdventOfCode", "src\AdventOfCode2016\AdventOfCode.csproj", "{01B296C7-8855-45AD-BD40-F44807EED5C3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,5 +25,8 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{01B296C7-8855-45AD-BD40-F44807EED5C3} = {72CADDC1-537E-4C17-A3AA-23399D183D0B}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A36AE3E4-BD89-429A-933D-F20C3F593950}
 	EndGlobalSection
 EndGlobal

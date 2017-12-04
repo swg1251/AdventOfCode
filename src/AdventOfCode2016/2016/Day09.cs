@@ -2,7 +2,7 @@
 using System.IO;
 using System.Linq;
 
-namespace AdventOfCode2016
+namespace AdventOfCode.Year2016
 {
     public class Day09 : IDay
     {
@@ -11,7 +11,7 @@ namespace AdventOfCode2016
 
         public void GetInput()
         {
-            compressed = File.ReadAllLines("input/Day09.txt").Where(l => !string.IsNullOrWhiteSpace(l)).First();
+            compressed = File.ReadAllLines("2016/input/day09.txt").Where(l => !string.IsNullOrWhiteSpace(l)).First();
         }
 
 		public void Solve()

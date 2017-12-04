@@ -4,7 +4,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace AdventOfCode2016
+namespace AdventOfCode.Year2016
 {
     public class Day05 : IDay
     {
@@ -20,7 +20,7 @@ namespace AdventOfCode2016
 
         public void GetInput()
         {
-            input = File.ReadAllLines("input/day05.txt").Where(l => !string.IsNullOrEmpty(l)).First();
+            input = File.ReadAllLines("2016/input/day05.txt").Where(l => !string.IsNullOrEmpty(l)).First();
         }
 
 		public void Solve()

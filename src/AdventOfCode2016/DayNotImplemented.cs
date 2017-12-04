@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace AdventOfCode2016
+namespace AdventOfCode
 {
     public class DayNotImplemented : IDay
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace AdventOfCode2016
+namespace AdventOfCode.Year2016
 {
     public class Day16 : IDay
     {
@@ -12,7 +12,7 @@ namespace AdventOfCode2016
 		public void GetInput()
 		{
 			bitString = new List<bool>();
-			var inputString = File.ReadAllLines("input/day16.txt").Where(l => !string.IsNullOrWhiteSpace(l)).First();
+			var inputString = File.ReadAllLines("2016/input/day16.txt").Where(l => !string.IsNullOrWhiteSpace(l)).First();
 			foreach (var bit in inputString)
 			{
 				bitString.Add(bit == '1');

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace AdventOfCode2016
+namespace AdventOfCode.Year2016
 {
     public class Day01 : IDay
     {
@@ -22,7 +22,7 @@ namespace AdventOfCode2016
 
         public void GetInput()
         {
-            var instructionsFile = File.OpenText("input/day01.txt");
+            var instructionsFile = File.OpenText("2016/input/day01.txt");
             instructions = instructionsFile.ReadLine().Replace(" ", "").Split(',');
         }
 

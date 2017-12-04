@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace AdventOfCode2016
+namespace AdventOfCode.Year2016
 {
     public class Day11 : IDay
     {
@@ -16,7 +16,7 @@ namespace AdventOfCode2016
         {
             var initialFloors = new List<List<string>>();
 
-            foreach (var line in File.ReadAllLines("input/day11.txt").Where(l => !string.IsNullOrWhiteSpace(l)))
+            foreach (var line in File.ReadAllLines("2016/input/day11.txt").Where(l => !string.IsNullOrWhiteSpace(l)))
             {
                 var floorItems = new List<string>();
 
