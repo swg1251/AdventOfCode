@@ -7,11 +7,11 @@ namespace AdventOfCode.Year2016
 {
     public class Day19 : IDay
     {
-		private List<int> elfPresentCounts;
+		private List<Elf> elves;
 
 		public Day19()
 		{
-			elfPresentCounts = new List<int>();
+			elves = new List<Elf>();
 		}
 
 		public void GetInput()
@@ -20,20 +20,20 @@ namespace AdventOfCode.Year2016
 
 			for (int i = 0; i < input; i++)
 			{
-				elfPresentCounts.Add(1);
+				elves.Add(new Elf { ElfNumber = i + 1, HasPresents = true });
 			}
 		}
 
 		public void Solve()
 		{
 			Steal(false);
-			Console.WriteLine($"The elf with all the presents (part one) is {elfPresentCounts.IndexOf(elfPresentCounts.Count) + 1}");
+			Console.WriteLine($"The elf with all the presents (part one) is {elves.First(e => e.HasPresents).ElfNumber}");
 
-			elfPresentCounts.Clear();
+			elves.Clear();
 			GetInput();
 
 			Steal(true);
-			Console.WriteLine($"The elf with all the presents (part two) is {elfPresentCounts.IndexOf(elfPresentCounts.Count) + 1}");
+			Console.WriteLine($"The elf with all the presents (part two) is {elves.First(e => e.HasPresents).ElfNumber}");
 		}
 
 		public void Steal(bool partTwo)
@@ -41,21 +41,20 @@ namespace AdventOfCode.Year2016
 			int i = 0;
 			int removedCount = 0;
 
-			while (removedCount < elfPresentCounts.Count - 1)
+			while (removedCount < elves.Count - 1)
 			{
-				if (i >= elfPresentCounts.Count)
+				if (i >= elves.Count)
 				{
 					i = 0;
 				}
-				if (elfPresentCounts[i] < 1)
+				if (!elves[i].HasPresents)
 				{
 					i++;
 					continue;
 				}
 
 				var nextElf = partTwo ? GetNextIndexPartTwo(i, removedCount) : GetNextIndex(i);
-				elfPresentCounts[i] += elfPresentCounts[nextElf];
-				elfPresentCounts[nextElf] = 0;
+				elves[nextElf].HasPresents = false;
 				removedCount++;
 				i++;
 			}
@@ -63,16 +62,16 @@ namespace AdventOfCode.Year2016
 
 		private int GetNextIndex(int startIndex)
 		{
-			for (int i = startIndex + 1; i < elfPresentCounts.Count; i++)
+			for (int i = startIndex + 1; i < elves.Count; i++)
 			{
-				if (elfPresentCounts[i] > 0)
+				if (elves[i].HasPresents)
 				{
 					return i;
 				}
 			}
 			for (int i = 0; i < startIndex; i++)
 			{
-				if (elfPresentCounts[i] > 0)
+				if (elves[i].HasPresents)
 				{
 					return i;
 				}
@@ -82,17 +81,17 @@ namespace AdventOfCode.Year2016
 
 		private int GetNextIndexPartTwo(int startIndex, int removedCount)
 		{
-			var elvesToMove = (elfPresentCounts.Count - removedCount) / 2;
+			var elvesToMove = (elves.Count - removedCount) / 2;
 			var moved = 0;
 			var i = startIndex;
 
 			while (moved < elvesToMove)
 			{
-				if (i == elfPresentCounts.Count)
+				if (i == elves.Count)
 				{
 					i = 0;
 				}
-				if (elfPresentCounts[i] == 0)
+				if (!elves[i].HasPresents)
 				{
 					i++;
 					continue;
@@ -103,6 +102,12 @@ namespace AdventOfCode.Year2016
 			}
 
 			return i - 1;
+		}
+
+		internal class Elf
+		{
+			public int ElfNumber { get; set; }
+			public bool HasPresents { get; set; }
 		}
     }
 }
