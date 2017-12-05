@@ -43,16 +43,7 @@ namespace AdventOfCode.Year2017
 			{
 				var newIndex = i + instructions[i];
 				steps++;
-
-				if (partTwo && instructions[i] > 2)
-				{
-					instructions[i]--;
-				}
-				else
-				{
-					instructions[i]++;
-				}
-
+				instructions[i] += (partTwo && instructions[i] > 2) ? -1 : 1;
 				i = newIndex;
 			}
 
