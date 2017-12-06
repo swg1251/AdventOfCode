@@ -18,96 +18,72 @@ namespace AdventOfCode.Year2016
 		{
 			var input = Convert.ToInt32(File.ReadAllLines("2016/input/day19.txt").Where(l => !string.IsNullOrEmpty(l)).First());
 
-			for (int i = 0; i < input; i++)
+			for (int i = 1; i <= input; i++)
 			{
-				elves.Add(new Elf { ElfNumber = i + 1, HasPresents = true });
+				elves.Add(new Elf { ElfNumber = i });
 			}
+
+			elves[0].NextElf = elves[1];
+			for (int i = 1; i < elves.Count - 1; i++)
+			{
+				elves[i].NextElf = elves[i + 1];
+				elves[i].PreviousElf = elves[i - 1];
+			}
+			elves[0].PreviousElf = elves[elves.Count - 1];
+			elves[elves.Count - 1].NextElf = elves[0];
+			elves[elves.Count - 1].PreviousElf = elves[elves.Count - 2];
 		}
 
 		public void Solve()
 		{
-			Steal(false);
-			Console.WriteLine($"The elf with all the presents (part one) is {elves.First(e => e.HasPresents).ElfNumber}");
+			PartOne();
 
 			elves.Clear();
 			GetInput();
 
-			Steal(true);
-			Console.WriteLine($"The elf with all the presents (part two) is {elves.First(e => e.HasPresents).ElfNumber}");
+			PartTwo();
 		}
 
-		public void Steal(bool partTwo)
+		private void PartOne()
 		{
-			int i = 0;
-			int removedCount = 0;
+			var elf = elves[0];
 
-			while (removedCount < elves.Count - 1)
+			while (elf.NextElf.ElfNumber != elf.ElfNumber)
 			{
-				if (i >= elves.Count)
-				{
-					i = 0;
-				}
-				if (!elves[i].HasPresents)
-				{
-					i++;
-					continue;
-				}
-
-				var nextElf = partTwo ? GetNextIndexPartTwo(i, removedCount) : GetNextIndex(i);
-				elves[nextElf].HasPresents = false;
-				removedCount++;
-				i++;
+				elf.NextElf = elf.NextElf.NextElf;
+				elf = elf.NextElf;
 			}
+
+			Console.WriteLine($"The elf with all the presents (part one) is {elf.ElfNumber}");
 		}
 
-		private int GetNextIndex(int startIndex)
+		private void PartTwo()
 		{
-			for (int i = startIndex + 1; i < elves.Count; i++)
-			{
-				if (elves[i].HasPresents)
-				{
-					return i;
-				}
-			}
-			for (int i = 0; i < startIndex; i++)
-			{
-				if (elves[i].HasPresents)
-				{
-					return i;
-				}
-			}
-			return startIndex;
-		}
+			var elfCount = elves.Count;
+			var elf = elves[0];
+			var oppositeElf = elves[elfCount / 2];
 
-		private int GetNextIndexPartTwo(int startIndex, int removedCount)
-		{
-			var elvesToMove = (elves.Count - removedCount) / 2;
-			var moved = 0;
-			var i = startIndex;
-
-			while (moved < elvesToMove)
+			while (elf.NextElf.ElfNumber != elf.ElfNumber)
 			{
-				if (i == elves.Count)
-				{
-					i = 0;
-				}
-				if (!elves[i].HasPresents)
-				{
-					i++;
-					continue;
-				}
+				// "remove" elf across the circle
+				oppositeElf.PreviousElf.NextElf = oppositeElf.NextElf;
+				oppositeElf.NextElf.PreviousElf = oppositeElf.PreviousElf;
 
-				i++;
-				moved++;
+				// set the new opposite elf - when the number remaining is odd, the next "opposite" elf will be two ahead
+				oppositeElf = (elfCount % 2 == 1) ? oppositeElf.NextElf.NextElf : oppositeElf.NextElf;
+				elfCount--;
+
+				elf = elf.NextElf;
 			}
 
-			return i - 1;
+			Console.WriteLine($"The elf with all the presents (part two) is {elf.ElfNumber}");
 		}
 
 		internal class Elf
 		{
 			public int ElfNumber { get; set; }
-			public bool HasPresents { get; set; }
+			public Elf NextElf { get; set; }
+			public Elf PreviousElf { get; set; }
 		}
     }
 }
