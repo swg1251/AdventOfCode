@@ -36,6 +36,7 @@ namespace AdventOfCode.Year2017
 				for (int i = 3; i < programParts.Length; i++)
 				{
 					var child = programs.Find(p => p.Name == programParts[i].Replace(",", "").Replace("\n", ""));
+					child.Parent = parent;
 					parent.Children.Add(child);
 				}
 			}
@@ -43,12 +44,9 @@ namespace AdventOfCode.Year2017
 
 		public void Solve()
 		{
-			// root program is the one not contained in any child-having programs' list of children
-			var rootProgram = programs.Find(p => !programs.Any(p2 => p2.Children != null && p2.Children.Select(c => c.Name).Contains(p.Name)));
+			// root program is the one with no parent
+			var rootProgram = programs.Find(p => p.Parent == null);
 			Console.WriteLine($"The bottom program's name (part one) is {rootProgram.Name}");
-
-			Console.WriteLine(rootProgram.GetTotalChildWeight());
-			Console.WriteLine(programs.Sum(p => p.Size));
 
 			var maxLevel = programs.Max(p => p.Level);
 
@@ -61,12 +59,23 @@ namespace AdventOfCode.Year2017
 					// is this the parent of the offending program?
 					if (program.Children.Any(p => p.GetTotalChildWeight() != expectedSize))
 					{
-						Console.WriteLine($"Offending program's parent is {program.Name}: weight {program.GetTotalChildWeight()}");
-						foreach (var child in program.Children)
+						// if there are 3 or more children, we know the different one is incorrect and should be adjusted to match the others
+						if (program.Children.Count > 2)
 						{
-							Console.WriteLine($"{child.Name}: {child.GetTotalChildWeight()}");
+							var offendingProgram = program.Children.Find(p => program.Children.Count(c => c.GetTotalChildWeight() == p.GetTotalChildWeight()) == 1);
+							var correctChildWeight = program.Children.Find(p => p.Name != offendingProgram.Name).GetTotalChildWeight();
+
+							var difference = correctChildWeight - offendingProgram.GetTotalChildWeight();
+							var correctedSize = offendingProgram.Size + difference;
+							Console.WriteLine($"The corrected size for incorrect program {offendingProgram.Name} (part two) is {correctedSize}");
+							return;
 						}
-						Console.WriteLine();
+						// otherwise, we need to check the parent
+						else
+						{
+							// TODO: handle the case when the offending program has less than two siblings
+							// this was not the case for my input, so I got the correct answer
+						}
 					}
 				}
 			}
