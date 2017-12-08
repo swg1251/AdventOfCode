@@ -4,7 +4,7 @@ namespace AdventOfCode
 {
     public class Program
     {
-		private const int minYear = 2016;
+		private const int minYear = 2015;
 		private const int maxYear = 2017;
 		private static int currentYear = 2017;
 
