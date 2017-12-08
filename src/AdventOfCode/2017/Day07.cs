@@ -28,11 +28,15 @@ namespace AdventOfCode.Year2017
 				programs.Add(new Program { Name = programName, Size = programSize });
 			}
 
+			// go through each program that has children again to add parent/child relationships
 			foreach (var programParts in inputLinesSplit.Where(l => l.Length > 2))
 			{
+				// get the parent from the list
 				var parent = programs.Find(p => p.Name == programParts[0]);
 				parent.Children = new List<Program>();
 
+				// find each child of the current program in the list and add it to the parent's list of children
+				// set each child's parent as the current program
 				for (int i = 3; i < programParts.Length; i++)
 				{
 					var child = programs.Find(p => p.Name == programParts[i].Replace(",", "").Replace("\n", ""));
