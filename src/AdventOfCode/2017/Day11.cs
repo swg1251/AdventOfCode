@@ -7,112 +7,151 @@ namespace AdventOfCode.Year2017
 {
     public class Day11 : IDay
     {
-		private Hexagon hexagon;
+		private double x;
+		private double y;
+		private Position start;
 
 		public void GetInput()
 		{
-			var i = 0;
-			hexagon = new Hexagon { Id = i };
-
 			var input = File.ReadAllLines("2017/input/day11.txt").Where(l => !string.IsNullOrEmpty(l)).First();
 			
 			foreach (var direction in input.Split(','))
 			{
-				i++;
-
 				if (direction == "n")
 				{
-					if (hexagon.North == null)
-					{
-						hexagon.North = new Hexagon { Id = i, South = hexagon };
-					}
-					hexagon = hexagon.North;
+					y++;
 				}
 				else if (direction == "ne")
 				{
-					if (hexagon.NorthEast == null)
-					{
-						hexagon.NorthEast = new Hexagon { Id = i, SouthWest = hexagon };
-					}
-					hexagon = hexagon.NorthEast;
+					x++;
+					y += .5;
 				}
 				else if (direction == "se")
 				{
-					if (hexagon.SouthEast == null)
-					{
-						hexagon.SouthEast = new Hexagon { Id = i, NorthWest = hexagon };
-					}
-					hexagon = hexagon.SouthEast;
+					x++;
+					y -= .5;
 				}
 				else if (direction == "s")
 				{
-					if (hexagon.South == null)
-					{
-						hexagon.South = new Hexagon { Id = i, North = hexagon };
-					}
-					hexagon = hexagon.South;
+					y--;
 				}
 				else if (direction == "sw")
 				{
-					if (hexagon.SouthWest == null)
-					{
-						hexagon.SouthWest = new Hexagon { Id = i, NorthEast = hexagon };
-					}
-					hexagon = hexagon.SouthWest;
+					x--;
+					y -= .5;
 				}
 				else if (direction == "nw")
 				{
-					if (hexagon.NorthWest == null)
-					{
-						hexagon.NorthWest = new Hexagon { Id = i, SouthEast = hexagon };
-					}
-					hexagon = hexagon.NorthWest;
+					x--;
+					y += .5;
 				}
 			}
+
+			start = new Position(x, y);
 		}
 
 		public void Solve()
 		{
-			var queue = new Queue<Hexagon>();
-			queue.Enqueue(hexagon);
+			var queue = new Queue<Position>();
+			queue.Enqueue(start);
 
 			while (queue.Any())
 			{
-				var currentHexagon = queue.Dequeue();
+				var currentPosition = queue.Dequeue();
 
-				if (currentHexagon.Id == 0)
+				if (currentPosition.IsGoal())
 				{
-					Console.WriteLine("reached the goal");
+					Console.WriteLine($"The smallest number of steps to reach the goal (part one) is {currentPosition.Path.Count() - 1}");
 					return;
 				}
 
-				foreach(var neighbor in currentHexagon.GetNeighbors())
+				foreach (var neighbor in currentPosition.GetNeighboringPositions())
 				{
-
+					if (neighbor.Distance() <= currentPosition.Distance())
+					{
+						queue.Enqueue(neighbor);
+					}
 				}
 			}
 		}
 
-		internal class Hexagon
+		internal class Position
 		{
-			public int Id { get; set; }
-			public Hexagon North { get; set; }
-			public Hexagon NorthEast { get; set; }
-			public Hexagon SouthEast { get; set; }
-			public Hexagon South { get; set; }
-			public Hexagon SouthWest { get; set; }
-			public Hexagon NorthWest { get; set; }
+			public double X { get; set; }
+			public double Y { get; set; }
 
-			public List<int> Explored { get; set; }
+			public IEnumerable<Position> Path { get; set; }
 
-			public IEnumerable<Hexagon> GetNeighbors()
+			public Position(double x, double y)
 			{
-
+				X = x;
+				Y = y;
+				Path = new List<Position>() { this };
 			}
 
-			private Hexagon TryGetNeighborWithPath()
+			public Position(double x, double y, IEnumerable<Position> path)
 			{
+				X = x;
+				Y = y;
+				Path = new List<Position>();
+				foreach (var position in path)
+				{
+					Path.Append(position);
+				}
+				Path.Append(this);
+			}
 
+			public bool IsGoal()
+			{
+				return X == 0 && Y == 0;
+			}
+
+			public IEnumerable<Position> GetNeighboringPositions()
+			{
+				var neighbors = new List<Position>();
+
+				// north
+				if (!Path.Any(p => p.X == X && p.Y == Y + 1))
+				{
+					neighbors.Add(new Position(X, Y + 1, Path));
+				}
+
+				// northeast
+				if (!Path.Any(p => p.X == X + 1 && p.Y == Y + .5))
+				{
+					neighbors.Add(new Position(X + 1, Y + .5, Path));
+				}
+
+				// southeast
+				if (!Path.Any(p => p.X == X + 1 && p.Y == Y - .5))
+				{
+					neighbors.Add(new Position(X + 1, Y - .5, Path));
+				}
+
+				// south
+				if (!Path.Any(p => p.X == X && p.Y == Y - 1))
+				{
+					neighbors.Add(new Position(X, Y - 1, Path));
+				}
+
+				// southwest
+				if (!Path.Any(p => p.X == X - 1 && p.Y == Y - .5))
+				{
+					neighbors.Add(new Position(X - 1, Y - .5, Path));
+				}
+
+				// northwest
+				if (!Path.Any(p => p.X == X - 1 && p.Y == Y + .5))
+				{
+					neighbors.Add(new Position(X - 1, Y + .5, Path));
+				}
+
+				return neighbors;
+			}
+
+			public double Distance()
+			{
+				return Math.Sqrt(Math.Pow(X, 2) + Math.Pow(Y, 2));
 			}
 		}
     }
