@@ -7,9 +7,11 @@ namespace AdventOfCode.Year2017
 {
     public class Day11 : IDay
     {
+		private int maxSteps;
 		private double x;
 		private double y;
 		private Position start;
+		private Position farthestPosition;
 
 		public void GetInput()
 		{
@@ -45,6 +47,12 @@ namespace AdventOfCode.Year2017
 					x--;
 					y += .5;
 				}
+
+				var currentSteps = CalculateSteps(new Position(x, y));
+				if (currentSteps > maxSteps)
+				{
+					maxSteps = currentSteps;
+				}
 			}
 
 			start = new Position(x, y);
@@ -52,27 +60,20 @@ namespace AdventOfCode.Year2017
 
 		public void Solve()
 		{
-			var queue = new Queue<Position>();
-			queue.Enqueue(start);
+			Console.WriteLine($"The fewest number of steps to reach the child process (part one) is {CalculateSteps(start)}");
+			Console.WriteLine($"The fewest number of steps to reach the child process from the farthest point (part two) is {maxSteps}");
+		}
 
-			while (queue.Any())
+		private int CalculateSteps(Position position)
+		{
+			var steps = 0;
+
+			while (!position.IsGoal())
 			{
-				var currentPosition = queue.Dequeue();
-
-				if (currentPosition.IsGoal())
-				{
-					Console.WriteLine($"The smallest number of steps to reach the goal (part one) is {currentPosition.Path.Count() - 1}");
-					return;
-				}
-
-				foreach (var neighbor in currentPosition.GetNeighboringPositions())
-				{
-					if (neighbor.Distance() <= currentPosition.Distance())
-					{
-						queue.Enqueue(neighbor);
-					}
-				}
+				position = position.GetNextPosition();
+				steps++;
 			}
+			return steps;
 		}
 
 		internal class Position
@@ -80,25 +81,10 @@ namespace AdventOfCode.Year2017
 			public double X { get; set; }
 			public double Y { get; set; }
 
-			public IEnumerable<Position> Path { get; set; }
-
 			public Position(double x, double y)
 			{
 				X = x;
 				Y = y;
-				Path = new List<Position>() { this };
-			}
-
-			public Position(double x, double y, IEnumerable<Position> path)
-			{
-				X = x;
-				Y = y;
-				Path = new List<Position>();
-				foreach (var position in path)
-				{
-					Path.Append(position);
-				}
-				Path.Append(this);
 			}
 
 			public bool IsGoal()
@@ -106,52 +92,39 @@ namespace AdventOfCode.Year2017
 				return X == 0 && Y == 0;
 			}
 
-			public IEnumerable<Position> GetNeighboringPositions()
+			public Position GetNextPosition()
 			{
 				var neighbors = new List<Position>();
 
 				// north
-				if (!Path.Any(p => p.X == X && p.Y == Y + 1))
-				{
-					neighbors.Add(new Position(X, Y + 1, Path));
-				}
+				neighbors.Add(new Position(X, Y + 1));
 
 				// northeast
-				if (!Path.Any(p => p.X == X + 1 && p.Y == Y + .5))
-				{
-					neighbors.Add(new Position(X + 1, Y + .5, Path));
-				}
+				neighbors.Add(new Position(X + 1, Y + .5));
 
 				// southeast
-				if (!Path.Any(p => p.X == X + 1 && p.Y == Y - .5))
-				{
-					neighbors.Add(new Position(X + 1, Y - .5, Path));
-				}
+				neighbors.Add(new Position(X + 1, Y - .5));
 
 				// south
-				if (!Path.Any(p => p.X == X && p.Y == Y - 1))
-				{
-					neighbors.Add(new Position(X, Y - 1, Path));
-				}
+				neighbors.Add(new Position(X, Y - 1));
 
 				// southwest
-				if (!Path.Any(p => p.X == X - 1 && p.Y == Y - .5))
-				{
-					neighbors.Add(new Position(X - 1, Y - .5, Path));
-				}
+				neighbors.Add(new Position(X - 1, Y - .5));
 
 				// northwest
-				if (!Path.Any(p => p.X == X - 1 && p.Y == Y + .5))
-				{
-					neighbors.Add(new Position(X - 1, Y + .5, Path));
-				}
+				neighbors.Add(new Position(X - 1, Y + .5));
 
-				return neighbors;
+				return neighbors.OrderBy(p => p.Distance()).First();
 			}
 
 			public double Distance()
 			{
-				return Math.Sqrt(Math.Pow(X, 2) + Math.Pow(Y, 2));
+				return Distance(X, Y);
+			}
+
+			public static double Distance(double x, double y)
+			{
+				return Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
 			}
 		}
     }
