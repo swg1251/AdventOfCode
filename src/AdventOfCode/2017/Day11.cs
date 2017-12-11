@@ -11,7 +11,6 @@ namespace AdventOfCode.Year2017
 		private double x;
 		private double y;
 		private Position start;
-		private Position farthestPosition;
 
 		public void GetInput()
 		{
@@ -114,6 +113,7 @@ namespace AdventOfCode.Year2017
 				// northwest
 				neighbors.Add(new Position(X - 1, Y + .5));
 
+				// return the position that advances towards the goal the most
 				return neighbors.OrderBy(p => p.Distance()).First();
 			}
 
