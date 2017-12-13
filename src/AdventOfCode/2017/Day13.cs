@@ -29,17 +29,29 @@ namespace AdventOfCode.Year2017
 		{
 			Console.WriteLine($"The severity of the whole trip (part one) is {GetSeverity(initialLayers, false)}");
 
+			initialLayers.Clear();
+			GetInput();
+
+			Console.WriteLine("Beginning part two - warning: slow...");
+
 			var i = 0;
 			while (true)
 			{
+				var layersCopy = new List<Layer>();
+				
 				// update initial positions once before each attempt to simulate the delay
 				foreach (var layer in initialLayers)
 				{
 					layer.UpdatePosition();
+					layersCopy.Add(new Layer(layer.Depth, layer.Range, layer.Position, layer.IsAscending));
 				}
 				i++;
+				if (i % 1000000 == 0)
+				{
+					Console.WriteLine($"Current delay: {i} picoseconds...");
+				}
 
-				if (GetSeverity(initialLayers, true) == 0)
+				if (GetSeverity(layersCopy, true) == 0)
 				{
 					break;
 				}
@@ -48,10 +60,8 @@ namespace AdventOfCode.Year2017
 			Console.WriteLine($"The fewest number of picoseconds to delay for a safe trip (part two) is {i}");
 		}
 
-		private int GetSeverity(List<Layer> initialLayers, bool partTwo)
+		private int GetSeverity(List<Layer> layers, bool partTwo)
 		{
-			var layers = new List<Layer>(initialLayers);
-
 			var severity = 0;
 			for (int i = 0; i <= layers.Max(l => l.Depth); i++)
 			{
@@ -81,17 +91,19 @@ namespace AdventOfCode.Year2017
 			public int Range { get; set; }
 			public int Position { get; set; }
 
-			private bool isAscending { get; set; }
+			public bool IsAscending { get; set; }
 
-			public Layer(int depth, int range)
+			public Layer(int depth, int range, int position = 0, bool isAscending = false)
 			{
 				Depth = depth;
 				Range = range;
+				Position = position;
+				IsAscending = isAscending;
 			}
 
 			public void UpdatePosition()
 			{
-				if (isAscending)
+				if (IsAscending)
 				{
 					if (Position > 0)
 					{
@@ -101,7 +113,7 @@ namespace AdventOfCode.Year2017
 					else
 					{
 						Position++;
-						isAscending = false;
+						IsAscending = false;
 						return;
 					}
 				}
@@ -115,7 +127,7 @@ namespace AdventOfCode.Year2017
 					else
 					{
 						Position--;
-						isAscending = true;
+						IsAscending = true;
 					}
 				}
 			}
