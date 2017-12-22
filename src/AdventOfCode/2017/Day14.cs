@@ -30,6 +30,76 @@ namespace AdventOfCode.Year2017
 			}
 			
 			Console.WriteLine($"The number of used squares (part one) is {binaryHashes.Sum(bh => bh.Count(c => c))}");
+
+			var onPositions = new List<Position>();
+			for (int i = 0; i < 128; i++)
+			{
+				for (int j = 0; j < 128; j++)
+				{
+					if (binaryHashes[i][j])
+					{
+						var onPosition = new Position(i, j);
+						onPositions.Add(onPosition);
+
+						var left = onPositions.Find(op => op.X == onPosition.X - 1 && op.Y == onPosition.Y);
+						var right = onPositions.Find(op => op.X == onPosition.X + 1 && op.Y == onPosition.Y);
+						var up = onPositions.Find(op => op.X == onPosition.X && op.Y == onPosition.Y - 1);
+						var down = onPositions.Find(op => op.X == onPosition.X && op.Y == onPosition.Y + 1);
+
+						if (left != null)
+						{
+							onPosition.Left = left;
+							left.Right = onPosition;
+						}
+						if (right != null)
+						{
+							onPosition.Right = right;
+							right.Left = onPosition;
+						}
+						if (up != null)
+						{
+							onPosition.Up = up;
+							up.Down = onPosition;
+						}
+						if (down != null)
+						{
+							onPosition.Down = down;
+							down.Up = onPosition;
+						}
+					}
+				}
+			}
+
+			var regionCount = 0;
+			while (onPositions.Any())
+			{
+				var root = onPositions[0];
+				root.CanReachGroupRoot = true;
+
+				var foundNewConnection = false;
+				do
+				{
+					foundNewConnection = false;
+
+					foreach (var onPosition in onPositions)
+					{
+						if (onPosition.Neighbors().Any(rp => rp.CanReachGroupRoot))
+						{
+							if (!onPosition.CanReachGroupRoot)
+							{
+								foundNewConnection = true;
+							}
+							onPosition.CanReachGroupRoot = true;
+						}
+					}
+				}
+				while (foundNewConnection);
+
+				regionCount++;
+				onPositions.RemoveAll(op => op.CanReachGroupRoot);
+			}
+
+			Console.WriteLine(($"The number of regions (part two) is {regionCount}"));
 		}
 
 		private string KnotHash(string input)
@@ -100,7 +170,7 @@ namespace AdventOfCode.Year2017
 			var hashHexadecimal = "";
 			for (int i = 0; i < 16; i++)
 			{
-				hashHexadecimal += Convert.ToString(denseHash[i], 16);
+				hashHexadecimal += Convert.ToString(denseHash[i], 16).PadLeft(2, '0');
 			}
 
 			return hashHexadecimal;
@@ -131,6 +201,46 @@ namespace AdventOfCode.Year2017
 				value -= 256;
 			}
 			return value;
+		}
+
+		internal class Position
+		{
+			public int X { get; set; }
+			public int Y { get; set; }
+			public bool CanReachGroupRoot { get; set; }
+
+			public Position Left { get; set; }
+			public Position Right { get; set; }
+			public Position Up { get; set; }
+			public Position Down { get; set; }
+
+			public IEnumerable<Position> Neighbors()
+			{
+				var neighbors = new List<Position>();
+				if (Left != null)
+				{
+					neighbors.Add(Left);
+				}
+				if (Right != null)
+				{
+					neighbors.Add(Right);
+				}
+				if (Up != null)
+				{
+					neighbors.Add(Up);
+				}
+				if (Down != null)
+				{
+					neighbors.Add(Down);
+				}
+				return neighbors;
+			}
+
+			public Position(int x, int y)
+			{
+				X = x;
+				Y = y;
+			}
 		}
 	}
 }
