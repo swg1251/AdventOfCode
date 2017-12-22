@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -66,10 +65,7 @@ namespace AdventOfCode.Year2017
 		private bool Lowest16BitsEqual(long valueA, long valueB)
 		{
 			valueA = (valueA << 48) >> 48;
-			//valueA = valueA >> 48;
-
 			valueB = (valueB << 48) >> 48;
-			//valueB = valueB >> 48;
 
 			return valueA == valueB;
 		}
