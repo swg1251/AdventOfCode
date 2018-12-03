@@ -5,8 +5,8 @@ namespace AdventOfCode
     public class Program
     {
 		private const int minYear = 2015;
-		private const int maxYear = 2017;
-		private static int currentYear = 2017;
+		private const int maxYear = 2018;
+		private static int currentYear = 2018;
 
         public static void Main(string[] args)
         {
