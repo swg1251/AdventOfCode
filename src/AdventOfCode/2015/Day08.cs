@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace AdventOfCode.Year2015
 {
@@ -54,7 +53,36 @@ namespace AdventOfCode.Year2015
 
 		private void PartTwo()
 		{
-			// TODO: this
+			var newTotalLength = 0;
+
+			foreach (var s in strings)
+			{
+				var newString = "\"";
+
+				foreach (var c in s)
+				{
+					if (c == '\"')
+					{
+						newString += '\\';
+						newString += '\"';
+					}
+					else if (c == '\\')
+					{
+						newString += '\\';
+						newString += '\\';
+					}
+					else
+					{
+						newString += c;
+					}
+				}
+
+				newString += "\"";
+
+				newTotalLength += newString.Length;
+			}
+
+			Console.WriteLine($"The difference between the re-encoded length and original length (part two) is: {newTotalLength - totalLength}");
 		}
     }
 }
