@@ -79,7 +79,7 @@ namespace AdventOfCode.Year2018
 				}
 			}
 
-			Console.WriteLine($"The letters in common between the correct box IDs are: {correctBoxOverlap}");
+			Console.WriteLine($"The letters in common between the correct box IDs (part two) are: {correctBoxOverlap}");
 		}
     }
 }
