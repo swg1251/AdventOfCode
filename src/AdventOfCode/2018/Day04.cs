@@ -27,6 +27,7 @@ namespace AdventOfCode.Year2018
 
 		public void Solve()
 		{
+			// dict of <guard ID, dict <minute, number of times asleep on that minute>>
 			var guards = new Dictionary<int, Dictionary<int, int>>();
 
 			var currentGuard = Convert.ToInt32(logs[0].s[1].Substring(1));
@@ -43,27 +44,18 @@ namespace AdventOfCode.Year2018
 				}
 
 				// falling asleep
-				else if (logs[i].s[0] == "falls")
-				{
-					asleepMinute = logs[i].dateTime.Minute;
-				}
+				else if (logs[i].s[0] == "falls") { asleepMinute = logs[i].dateTime.Minute; }
 
 				// waking up
 				else if (logs[i].s[0] == "wakes")
 				{
 					awakeMinute = logs[i].dateTime.Minute;
-					
+
 					// add all asleep minutes
-					if (!guards.ContainsKey(currentGuard))
-					{
-						guards[currentGuard] = new Dictionary<int, int>();
-					}
+					if (!guards.ContainsKey(currentGuard)) { guards[currentGuard] = new Dictionary<int, int>(); }
 					for (int m = asleepMinute; m < awakeMinute; m++)
 					{
-						if (!guards[currentGuard].ContainsKey(m))
-						{
-							guards[currentGuard][m] = 0;
-						}
+						if (!guards[currentGuard].ContainsKey(m)) { guards[currentGuard][m] = 0; }
 						guards[currentGuard][m]++;
 					}
 				}
