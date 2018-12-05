@@ -50,10 +50,9 @@ namespace AdventOfCode.Year2018
 				else if (logs[i].s[0] == "wakes")
 				{
 					awakeMinute = logs[i].dateTime.Minute;
-
-					// add all asleep minutes
 					if (!guards.ContainsKey(currentGuard)) { guards[currentGuard] = new Dictionary<int, int>(); }
 
+					// add all asleep minutes
 					for (int m = asleepMinute; m < awakeMinute; m++)
 					{
 						if (!guards[currentGuard].ContainsKey(m)) { guards[currentGuard][m] = 0; }
