@@ -53,6 +53,7 @@ namespace AdventOfCode.Year2018
 
 					// add all asleep minutes
 					if (!guards.ContainsKey(currentGuard)) { guards[currentGuard] = new Dictionary<int, int>(); }
+
 					for (int m = asleepMinute; m < awakeMinute; m++)
 					{
 						if (!guards[currentGuard].ContainsKey(m)) { guards[currentGuard][m] = 0; }
