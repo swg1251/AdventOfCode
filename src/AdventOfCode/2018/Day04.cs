@@ -8,6 +8,7 @@ namespace AdventOfCode.Year2018
 	public class Day04 : IDay
 	{
 		private List<(DateTime dateTime, List<string> s)> logs;
+
 		public void GetInput()
 		{
 			var input = File.ReadAllLines("2018/input/day04.txt").Where(l => !string.IsNullOrEmpty(l));
@@ -15,14 +16,19 @@ namespace AdventOfCode.Year2018
 			logs = new List<(DateTime dateTime, List<string> s)>();
 			foreach (var l in input)
 			{
-				logs.Add(GetLog(l));
+				var parts = l.Split(']');
+				var datePart = parts[0].Replace("[", "");
+				logs.Add((Convert.ToDateTime(datePart), parts[1].Trim().Split(' ').ToList()));
 			}
+
+			// sort each log chronologically
 			logs = logs.AsEnumerable().OrderBy(l => l.dateTime).ToList();
 		}
 
 		public void Solve()
 		{
 			var guards = new Dictionary<int, Dictionary<int, int>>();
+
 			var currentGuard = Convert.ToInt32(logs[0].s[1].Substring(1));
 			var asleepMinute = 0;
 			var awakeMinute = 0;
@@ -63,39 +69,15 @@ namespace AdventOfCode.Year2018
 				}
 			}
 
-			var maxSleepMinutes = guards.Max(g => g.Value.Values.Sum());
-			var sleepiestGuard = guards.First(g => g.Value.Values.Sum() == maxSleepMinutes).Key;
+			// get the guard with the total most asleep minutes, then their most asleep minute
+			var sleepiestGuard = guards.Aggregate((l, r) => l.Value.Values.Sum() > r.Value.Values.Sum() ? l : r).Key;
+			var sleepiestMinute = guards[sleepiestGuard].Aggregate((l, r) => l.Value > r.Value ? l : r).Key;
+			Console.WriteLine($"The sleepiest guard ID * his sleepiest minute (part one) is: {sleepiestGuard * sleepiestMinute}");
 
-			var sleepiestMinuteValue = guards[sleepiestGuard].Values.Max();
-			var sleepiestMinuteKey = guards[sleepiestGuard].First(m => m.Value == sleepiestMinuteValue).Key;
-
-			Console.WriteLine($"The sleepiest guard ID * his sleepiest minute (part one) is: {sleepiestGuard * sleepiestMinuteKey}");
-
-			var sleepiestMinuteGuard = 0;
-			var sleepiestMinuteGuardMinute = 0;
-			var sleepiestMinuteTotal = 0;
-
-			foreach (var g in guards)
-			{
-				foreach (var t in g.Value)
-				{
-					if (t.Value > sleepiestMinuteTotal)
-					{
-						sleepiestMinuteTotal = t.Value;
-						sleepiestMinuteGuard = g.Key;
-						sleepiestMinuteGuardMinute = t.Key;
-					}
-				}
-			}
-
-			Console.WriteLine($"The most minute-consistent sleepy guard * his minute (part two) is: {sleepiestMinuteGuard * sleepiestMinuteGuardMinute}");
-		}
-
-		private (DateTime dateTime, List<string> s) GetLog(string s)
-		{
-			var parts = s.Split(']');
-			var datePart = parts[0].Replace("[", "");
-			return (Convert.ToDateTime(datePart), parts[1].Trim().Split(' ').ToList());
+			// now get the guard who was asleep most in a single minute, then their sleepiest minute
+			sleepiestGuard = guards.Aggregate((l, r) => l.Value.Values.Max() > r.Value.Values.Max() ? l : r).Key;
+			sleepiestMinute = guards[sleepiestGuard].Aggregate((l, r) => l.Value > r.Value ? l : r).Key;
+			Console.WriteLine($"The most minute-consistent sleepy guard * his minute (part two) is: {sleepiestGuard * sleepiestMinute}");
 		}
 	}
 }
