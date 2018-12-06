@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace AdventOfCode.Year2018
 {
@@ -33,32 +32,23 @@ namespace AdventOfCode.Year2018
 			Console.WriteLine($"The shortest reacted polymer length is (part two): {shortestLength}");
 		}
 
-		// Slow, takes ~5 seconds each time
+		// Shoutouts to tapdudy for stack idea
 		private int GetReactedLength(string polymer)
 		{
-			var removed = true;
-
-			while (removed)
+			var stack = new Stack<char>();
+			foreach (var polyChar in polymer)
 			{
-				removed = false;
-
-				for (int i = 0; i < polymer.Length - 1; i++)
+				// Difference between lowercase/uppercase ASCII character codes is 32
+				if (stack.Any() && Math.Abs(polyChar - stack.Peek()) == 32)
 				{
-					var c1 = polymer[i];
-					var c2 = polymer[i + 1];
-
-					// Difference between lowercase/uppercase ASCII character codes is 32
-					if (Math.Abs(c1 - c2) == 32)
-					{
-						polymer = polymer.Remove(i, 2);
-						removed = true;
-						i--;
-						break;
-					}
+					stack.Pop();
+				}
+				else
+				{
+					stack.Push(polyChar);
 				}
 			}
-
-			return polymer.Length;
+			return stack.Count;
 		}
 	}
 }
