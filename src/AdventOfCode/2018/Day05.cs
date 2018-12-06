@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace AdventOfCode.Year2018
 {
@@ -20,10 +21,10 @@ namespace AdventOfCode.Year2018
 			Console.WriteLine($"The reacted polymer length is (part one): {partOne}");
 
 			var shortestLength = int.MaxValue;
-			foreach (var c in originalString.Select(c => char.ToLowerInvariant(c)).Distinct())
+			foreach (var c in "abcdefghijklmnopqrstuvqwxyz")
 			{
-				Console.WriteLine(c);
-				var length = GetReactedLength(originalString, c);
+				var s = originalString.Replace(c.ToString(), "").Replace(char.ToUpperInvariant(c).ToString(), "");
+				var length = GetReactedLength(s);
 				if (length < shortestLength)
 				{
 					shortestLength = length;
@@ -32,14 +33,9 @@ namespace AdventOfCode.Year2018
 			Console.WriteLine($"The shortest reacted polymer length is (part two): {shortestLength}");
 		}
 
-		private int GetReactedLength(string polymer, char removeChar = '\0')
+		// Slow, takes ~5 seconds each time
+		private int GetReactedLength(string polymer)
 		{
-			if (removeChar != '\0')
-			{
-				polymer = polymer.Replace(removeChar.ToString(), "");
-				polymer = polymer.Replace(char.ToUpperInvariant(removeChar).ToString(), "");
-			}
-
 			var removed = true;
 
 			while (removed)
@@ -48,12 +44,15 @@ namespace AdventOfCode.Year2018
 
 				for (int i = 0; i < polymer.Length - 1; i++)
 				{
-					if (polymer[i] != polymer[i + 1] &&
-						char.ToLowerInvariant(polymer[i]) == char.ToLowerInvariant(polymer[i + 1]))
+					var c1 = polymer[i];
+					var c2 = polymer[i + 1];
+
+					// Difference between lowercase/uppercase ASCII character codes is 32
+					if (Math.Abs(c1 - c2) == 32)
 					{
 						polymer = polymer.Remove(i, 2);
 						removed = true;
-						i = 0;
+						i--;
 						break;
 					}
 				}
