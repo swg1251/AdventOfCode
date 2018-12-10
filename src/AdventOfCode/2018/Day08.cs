@@ -75,7 +75,7 @@ namespace AdventOfCode.Year2018
 				var value = 0;
 				foreach (var index in Data)
 				{
-					if (index < Children.Count)
+					if (index <= Children.Count)
 					{
 						value += Children[index - 1].Value();
 					}
