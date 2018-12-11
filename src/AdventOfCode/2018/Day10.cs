@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace AdventOfCode.Year2018
 {
-	public class Day10r : IDay
+	public class Day10 : IDay
 	{
 		private List<Point> points;
 
