@@ -52,7 +52,7 @@ namespace AdventOfCode.Tests.Year2018
 			Assert.Equal((21, 61, 30), answer);
 		}
 
-		[Fact]
+		[Fact(Skip = "Takes minutes to run")]
 		void Part_two_18()
 		{
 			var day11 = new AdventOfCode.Year2018.Day11();
@@ -60,7 +60,7 @@ namespace AdventOfCode.Tests.Year2018
 			Assert.Equal((90, 269, 113, 16), answer);
 		}
 
-		[Fact]
+		[Fact(Skip = "Takes minutes to run")]
 		void Part_two_42()
 		{
 			var day11 = new AdventOfCode.Year2018.Day11();

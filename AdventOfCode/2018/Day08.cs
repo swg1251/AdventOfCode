@@ -7,12 +7,12 @@ namespace AdventOfCode.Year2018
 {
 	public class Day08 : IDay
 	{
-		private List<int> input;
+		public List<int> Input;
 		private int i;
 
 		public void GetInput()
 		{
-			input = File.ReadAllLines("2018/input/day08.txt")
+			Input = File.ReadAllLines("2018/input/day08.txt")
 				.Where(l => !string.IsNullOrEmpty(l))
 				.First()
 				.Split(' ')
@@ -25,18 +25,15 @@ namespace AdventOfCode.Year2018
 			i = 0;
 			var root = GetNode();
 			Console.WriteLine($"The sum of metadata values (part one) is: {root.Sum()}");
-
-			//i = 0;
-			//root = GetNode();
 			Console.WriteLine($"The value of the root node (part two) is: {root.Value()}");
 		}
 
-		private Node GetNode()
+		public Node GetNode()
 		{
 			var node = new Node();
 
-			var childCount = input[i];
-			var dataCount = input[i + 1];
+			var childCount = Input[i];
+			var dataCount = Input[i + 1];
 
 			i += 2;
 			// recursively add number of specified children
@@ -47,14 +44,14 @@ namespace AdventOfCode.Year2018
 
 			for (int d = 0; d < dataCount; d++)
 			{
-				node.Data.Add(input[i]);
+				node.Data.Add(Input[i]);
 				i++;
 			}
 
 			return node;
 		}
 
-		internal class Node
+		public class Node
 		{
 			public List<Node> Children { get; set; } = new List<Node>();
 

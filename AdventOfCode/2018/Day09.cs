@@ -24,10 +24,10 @@ namespace AdventOfCode.Year2018
 			Console.WriteLine($"The winning elf's score (part two) is: {GetMaxScore(maxPlayers, maxMarble * 100)}");
 		}
 
-		private long GetMaxScore(int playerCount, int lastMarble)
+		public long GetMaxScore(int playerCount, int lastMarble)
 		{
 			var players = new Dictionary<int, long>();
-			for (int i = 1; i < maxPlayers + 1; i++)
+			for (int i = 1; i < playerCount + 1; i++)
 			{
 				players[i] = 0;
 			}
