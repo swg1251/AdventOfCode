@@ -8,22 +8,14 @@ namespace AdventOfCode.Year2015
 {
 	public class Day19 : IDay
 	{
-		private string inputMolecule;
-		private Dictionary<string, List<string>> reactions;
-		private Dictionary<string, string> reverseReactions;
+		public string InputMolecule;
+		public Dictionary<string, List<string>> Reactions;
+		public Dictionary<string, string> ReverseReactions;
 
 		public void GetInput()
 		{
-			reactions = new Dictionary<string, List<string>>();
-			reverseReactions = new Dictionary<string, string>();
-			/*
-			inputMolecule = "HOH";
-			reactions["H"] = new List<string>();
-			reactions["H"].Add("HO");
-			reactions["H"].Add("OH");
-			reactions["O"] = new List<string>();
-			reactions["O"].Add("HH");
-			*/
+			Reactions = new Dictionary<string, List<string>>();
+			ReverseReactions = new Dictionary<string, string>();
 
 			var input = File.ReadAllLines("2015/input/day19.txt").Where(l => !string.IsNullOrEmpty(l));
 			foreach (var line in input.SkipLast(1))
@@ -32,46 +24,40 @@ namespace AdventOfCode.Year2015
 				var atom = lineParts[0];
 				var reaction = lineParts[1];
 
-				if (!reactions.ContainsKey(atom))
+				if (!Reactions.ContainsKey(atom))
 				{
-					reactions[atom] = new List<string>();
+					Reactions[atom] = new List<string>();
 				}
-				reactions[atom].Add(reaction);
+				Reactions[atom].Add(reaction);
 
-				reverseReactions[reaction] = atom;
+				ReverseReactions[reaction] = atom;
 			}
-			inputMolecule = input.Last();
+			InputMolecule = input.Last();
 		}
 
 		public void Solve()
 		{
-			Console.WriteLine($"The number of distinct molecules after one reaction (part one) is: {GetReactions(inputMolecule).Count}");
+			Console.WriteLine($"The number of distinct molecules after one reaction (part one) is: {PartOne()}");
 			Console.WriteLine($"The number of steps from e to medicine (part two) is: {GetStepsToMolecule()}");
+		}
+
+		public int PartOne()
+		{
+			return GetReactions(InputMolecule).Count;
 		}
 
 		private int GetStepsToMolecule()
 		{
-			var molecules = new HashSet<string> { inputMolecule };
-			var exploredMolecules = new HashSet<string>();
+			var orderedReverse = ReverseReactions.OrderByDescending(r => r.Key.Length - r.Value.Length);
+
+			var molecule = InputMolecule;
 			var steps = 0;
 
-			while (!molecules.Contains("e"))
+			while (molecule != "e")
 			{
 				steps++;
 
-				var newMolecules = new HashSet<string>();
-				foreach (var m in molecules)
-				{
-					foreach (var nm in ReverseReactions(m))
-					{
-						if (!exploredMolecules.Add(nm))
-						{
-							continue;
-						}
-						newMolecules.Add(nm);
-					}
-				}
-				molecules = newMolecules;
+				molecule = Reverse(molecule, orderedReverse);
 			}
 			return steps;
 		}
@@ -83,14 +69,14 @@ namespace AdventOfCode.Year2015
 			{
 				var atom = string.Empty;
 				var ss1 = startMolecule[i].ToString();
-				if (reactions.ContainsKey(ss1))
+				if (Reactions.ContainsKey(ss1))
 				{
 					atom = ss1;
 				}
 				else if (i < startMolecule.Length - 1)
 				{
 					var ss2 = startMolecule.Substring(i, 2);
-					if (reactions.ContainsKey(ss2))
+					if (Reactions.ContainsKey(ss2))
 					{
 						atom = ss2;
 					}
@@ -101,7 +87,7 @@ namespace AdventOfCode.Year2015
 					continue;
 				}
 
-				foreach (var reaction in reactions[atom])
+				foreach (var reaction in Reactions[atom])
 				{
 					var left = startMolecule.Substring(0, i);
 					var right = string.Empty;
@@ -117,10 +103,21 @@ namespace AdventOfCode.Year2015
 			return molecules;
 		}
 
-		private HashSet<string> ReverseReactions(string startMolecule)
+		private string Reverse(string startMolecule, IEnumerable<KeyValuePair<string, string>> reverseOrdered)
 		{
-			var molecules = new HashSet<string>();
-			var maxReactionLength = reverseReactions.Keys.Max(k => k.Length);
+			foreach (var reverse in reverseOrdered)
+			{
+				if (startMolecule.Contains(reverse.Key))
+				{
+					var regex = new Regex(reverse.Key);
+					return regex.Replace(startMolecule, reverse.Value);
+				}
+			}
+
+			return startMolecule;
+
+			/*
+			var maxReactionLength = ReverseReactions.Keys.Max(k => k.Length);
 
 			for (int i = 0; i < startMolecule.Length; i++)
 			{
@@ -133,12 +130,12 @@ namespace AdventOfCode.Year2015
 
 					// if this substring matches one of the reactions, do the replacement
 					var ss = startMolecule.Substring(i, j);
-					if (reverseReactions.ContainsKey(ss))
+					if (ReverseReactions.ContainsKey(ss))
 					{
 						var left = startMolecule.Substring(0, i);
 						var right = startMolecule.Substring(i + ss.Length, startMolecule.Length - (i + ss.Length));
 
-						var newMolecule = left + reverseReactions[ss] + right;
+						var newMolecule = left + ReverseReactions[ss] + right;
 						if (newMolecule.Length < startMolecule.Length)
 						{
 							molecules.Add(newMolecule);
@@ -146,7 +143,9 @@ namespace AdventOfCode.Year2015
 					}
 				}
 			}
+
 			return molecules;
+			*/
 		}
 	}
 }
