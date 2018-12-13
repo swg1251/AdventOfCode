@@ -33,7 +33,7 @@ namespace AdventOfCode.Tests.Year2018
 			var day12 = new AdventOfCode.Year2018.Day12();
 			var goodInputs = day12.GetGoodInputs(input);
 			var plants = day12.GetInitialState(initialState);
-			var answer = day12.PartOne(goodInputs, plants);
+			var answer = day12.GetTotal(goodInputs, plants, 20);
 			Assert.Equal(325, answer);
 		}
 	}

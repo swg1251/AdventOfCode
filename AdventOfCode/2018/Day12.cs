@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,117 +8,108 @@ namespace AdventOfCode.Year2018
 {
 	public class Day12 : IDay
 	{
-		public IEnumerable<string> GoodInputs;
-		public Dictionary<int, bool> Plants;
+		private IEnumerable<string> initialInput;
+		private string initialState;
 
 		public void GetInput()
 		{
-			// ???
-
+			initialInput = File.ReadAllLines("2018/input/day12.txt").Where(l => !string.IsNullOrEmpty(l)).Skip(2);
+			initialState = File.ReadAllLines("2018/input/day12.txt").Where(l => !string.IsNullOrEmpty(l)).First().Replace("initial state: ", "");
 		}
 
 		public void Solve()
 		{
-			var inputs = File.ReadAllLines("2018/input/day12.txt").Where(l => !string.IsNullOrEmpty(l)).Skip(2);
-			var initialState = File.ReadAllLines("2018/input/day12.txt").Where(l => !string.IsNullOrEmpty(l)).First().Replace("initial state: ", "");
+			var partOne = GetTotal(GetGoodInputs(initialInput), GetInitialState(initialState), 20);
+			Console.WriteLine($"The total number after 20 generations (part one) is: {partOne}");
 
-			Console.WriteLine(PartOne(GetGoodInputs(inputs), GetInitialState(initialState)));
+
+			var partTwo = GetTotal(GetGoodInputs(initialInput), GetInitialState(initialState), 50000000000);
+			Console.WriteLine($"The total number after 50 billion generations (part two) is: {partTwo}");
 		}
 
-		public List<string> GetGoodInputs(IEnumerable<string> input)
+		public List<int> GetGoodInputs(IEnumerable<string> input)
 		{
+			// create binary strings and convert to int
 			var goodInputs = new List<string>();
 			foreach (var line in input)
 			{
 				var lineParts = line.Split(' ');
 				if (lineParts[2] == "#")
 				{
-					goodInputs.Add(lineParts[0]);
+					goodInputs.Add(lineParts[0].Replace('.', '0').Replace('#', '1'));
 				}
 			}
-			return goodInputs;
+
+			var intInputs = new List<int>();
+			foreach (var binary in goodInputs)
+			{
+				intInputs.Add(Convert.ToInt32(binary, 2));
+			}
+			return intInputs;
 		}
 
-		public Dictionary<int, bool> GetInitialState(string initialState)
+		public List<long> GetInitialState(string initialState)
 		{
-			var plants = new Dictionary<int, bool>();
-			for (int i = -200; i < 200; i++)
-			{
-				plants[i] = false;
-			}
+			var plants = new List<long>();
 			for (int i = 0; i < initialState.Length; i++)
 			{
-				plants[i] = initialState[i] == '#';
+				if (initialState[i] == '#')
+				{
+					plants.Add(i);
+				}
 			}
 			return plants;
 		}
 
-		public int PartOne(IEnumerable<string> producers, Dictionary<int, bool> plants)
+		public long GetTotal(IEnumerable<int> producers, List<long> plants, long generations)
 		{
-			var currentPlants = plants;
-			var newPlants = new Dictionary<int, bool>();
-			for (int i = -200; i < 200; i++)
-			{
-				newPlants[i] = false;
-			}
+			var newPlants = new List<long>();
 
-			for (int i = 1; i < 21; i++)
+			var min = plants.Min() - 2;
+			var max = plants.Max() + 2;
+
+			for (long i = 1; i < generations + 1; i++)
 			{
-				newPlants = new Dictionary<int, bool>();
-				for (int j = -200; j < 200; j++)
+				if (i % 1000000 == 0)
 				{
-					newPlants[j] = false;
+					Console.WriteLine(i);
 				}
 
-				for (int j = -198; j < 198; j++)
-				{
-					var pattern = string.Empty;
-					pattern += currentPlants[j - 2] ? "#" : ".";
-					pattern += currentPlants[j - 1] ? "#" : ".";
-					pattern += currentPlants[j] ? "#" : ".";
-					pattern += currentPlants[j + 1] ? "#" : ".";
-					pattern += currentPlants[j + 2] ? "#" : ".";
+				newPlants = new List<long>();
 
-					newPlants[j] = producers.Contains(pattern);
+				for (long j = min; j <= max; j++)
+				{
+					// convert binary array to int
+					var ba = new BitArray(new bool[]
+					{
+						plants.Contains(j + 2),
+						plants.Contains(j + 1),
+						plants.Contains(j),
+						plants.Contains(j - 1),
+						plants.Contains(j - 2)
+					});
+					var iv = new int[1];
+					ba.CopyTo(iv, 0);
+
+					if (producers.Contains(iv[0]))
+					{
+						newPlants.Add(j);
+					}
 				}
 
-				currentPlants = newPlants;
-			}
-			return currentPlants.Where(p => p.Value).Sum(p => p.Key);
-		}
-
-		public int PartTwo(IEnumerable<string> producers, Dictionary<int, bool> plants)
-		{
-			var currentPlants = plants;
-			var newPlants = new Dictionary<int, bool>();
-			for (int i = -200; i < 200; i++)
-			{
-				newPlants[i] = false;
-			}
-
-			for (long i = 1; i < 50000000000; i++)
-			{
-				newPlants = new Dictionary<int, bool>();
-				for (int j = -200; j < 200; j++)
+				if (plants.Sum(p => p + 1) == newPlants.Sum())
 				{
-					newPlants[j] = false;
+					// plants essentially the same, just shifting 1 to the right each time
+					// for each current index, the final index would be index + (50bil - current gen)
+					return newPlants.Sum(p => p + (generations - i));
 				}
 
-				for (int j = -198; j < 198; j++)
-				{
-					var pattern = string.Empty;
-					pattern += currentPlants[j - 2] ? "#" : ".";
-					pattern += currentPlants[j - 1] ? "#" : ".";
-					pattern += currentPlants[j] ? "#" : ".";
-					pattern += currentPlants[j + 1] ? "#" : ".";
-					pattern += currentPlants[j + 2] ? "#" : ".";
+				plants = newPlants;
 
-					newPlants[j] = producers.Contains(pattern);
-				}
-
-				currentPlants = newPlants;
+				min = plants.Min() - 2;
+				max = plants.Max() + 2;
 			}
-			return currentPlants.Where(p => p.Value).Sum(p => p.Key);
+			return plants.Sum();
 		}
 	}
 }
