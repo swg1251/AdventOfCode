@@ -5,22 +5,58 @@ namespace AdventOfCode.Tests.Year2015
 {
     public class Day19Test
     {
-		[Fact]
-		void Part_one_test()
+		IEnumerable<string> inputPartOne = new List<string>
 		{
-			var day19 = new AdventOfCode.Year2015.Day19
-			{
-				InputMolecule = "HOH",
-				Reactions = new Dictionary<string, List<string>>(),
-			};
-			day19.Reactions["H"] = new List<string>();
-			day19.Reactions["H"].Add("HO");
-			day19.Reactions["H"].Add("OH");
-			day19.Reactions["O"] = new List<string>();
-			day19.Reactions["O"].Add("HH");
+			"H => HO",
+			"H => OH",
+			"O => HH",
+			""
+		};
 
-			var answer = day19.PartOne();
+		IEnumerable<string> inputPartTwo = new List<string>
+		{
+			"e => H",
+			"e => O",
+			"H => HO",
+			"H => OH",
+			"O => HH",
+			""
+		};
+
+		[Fact]
+		void Part_one_example_one()
+		{
+			var day19 = new AdventOfCode.Year2015.Day19();
+			var reactions = day19.GetReactions(inputPartOne);
+			var answer = day19.GetDistinctReactionCount("HOH", reactions.reactions);
 			Assert.Equal(4, answer);
 		}
-    }
+
+		[Fact]
+		void Part_one_example_two()
+		{
+			var day19 = new AdventOfCode.Year2015.Day19();
+			var reactions = day19.GetReactions(inputPartOne);
+			var answer = day19.GetDistinctReactionCount("HOHOHO", reactions.reactions);
+			Assert.Equal(7, answer);
+		}
+
+		[Fact(Skip = "Puzzle input allows part two to work, example input is different")]
+		void Part_two_example_one()
+		{
+			var day19 = new AdventOfCode.Year2015.Day19();
+			var reactions = day19.GetReactions(inputPartTwo);
+			var answer = day19.GetStepsToMolecule("HOH", reactions.reverseReactions);
+			Assert.Equal(3, answer);
+		}
+
+		[Fact(Skip = "Puzzle input allows part two to work, example input is different")]
+		void Part_two_example_two()
+		{
+			var day19 = new AdventOfCode.Year2015.Day19();
+			var reactions = day19.GetReactions(inputPartTwo);
+			var answer = day19.GetStepsToMolecule("HOHOHO", reactions.reverseReactions);
+			Assert.Equal(6, answer);
+		}
+	}
 }
