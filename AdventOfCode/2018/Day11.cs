@@ -8,10 +8,14 @@ namespace AdventOfCode.Year2018
 	public class Day11 : IDay
 	{
 		private int serial;
+		public Dictionary<(int x, int y, int size), int> Boxes;
 
 		public void GetInput()
 		{
 			serial = Convert.ToInt32(File.ReadAllLines("2018/input/day11.txt").Where(l => !string.IsNullOrEmpty(l)).First());
+
+			// save previous boxes in a dictionary to save time
+			Boxes = new Dictionary<(int x, int y, int size), int>();
 		}
 
 		public void Solve()
@@ -86,13 +90,30 @@ namespace AdventOfCode.Year2018
 				for (int x = 0; x < 301 - boxSize; x++)
 				{
 					var total = 0;
-					for (int j = 0; j < boxSize; j++)
+					if (Boxes.TryGetValue((x, y, boxSize - 1), out total))
 					{
-						for (int i = 0; i < boxSize; i++)
+						for (int j = 0; j < boxSize - 1; j++)
 						{
-							total += grid[y + j][x + i];
+							total += grid[y + j][x + (boxSize - 1)];
+						}
+						for (int i = 0; i < boxSize - 1; i++)
+						{
+							total += grid[y + boxSize - 1][x + i];
+						}
+						total += grid[y + boxSize - 1][x + boxSize - 1];
+					}
+					else
+					{
+						for (int j = 0; j < boxSize; j++)
+						{
+							for (int i = 0; i < boxSize; i++)
+							{
+								total += grid[y + j][x + i];
+							}
 						}
 					}
+
+					Boxes[(x, y, boxSize)] = total;
 
 					if (total > maxTotal)
 					{

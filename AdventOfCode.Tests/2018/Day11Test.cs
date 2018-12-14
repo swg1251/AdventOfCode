@@ -1,4 +1,5 @@
-﻿using Xunit;
+﻿using System.Collections.Generic;
+using Xunit;
 
 namespace AdventOfCode.Tests.Year2018
 {
@@ -40,6 +41,7 @@ namespace AdventOfCode.Tests.Year2018
 		void Part_one_18()
 		{
 			var day11 = new AdventOfCode.Year2018.Day11();
+			day11.Boxes = new Dictionary<(int x, int y, int size), int>();
 			var answer = day11.PartOne(18);
 			Assert.Equal((33, 45, 29), answer);
 		}
@@ -48,22 +50,25 @@ namespace AdventOfCode.Tests.Year2018
 		void Part_one_42()
 		{
 			var day11 = new AdventOfCode.Year2018.Day11();
+			day11.Boxes = new Dictionary<(int x, int y, int size), int>();
 			var answer = day11.PartOne(42);
 			Assert.Equal((21, 61, 30), answer);
 		}
 
-		[Fact(Skip = "Takes minutes to run")]
+		[Fact]
 		void Part_two_18()
 		{
 			var day11 = new AdventOfCode.Year2018.Day11();
+			day11.Boxes = new Dictionary<(int x, int y, int size), int>();
 			var answer = day11.PartTwo(18);
 			Assert.Equal((90, 269, 113, 16), answer);
 		}
 
-		[Fact(Skip = "Takes minutes to run")]
+		[Fact]
 		void Part_two_42()
 		{
 			var day11 = new AdventOfCode.Year2018.Day11();
+			day11.Boxes = new Dictionary<(int x, int y, int size), int>();
 			var answer = day11.PartTwo(42);
 			Assert.Equal((232, 251, 119, 12), answer);
 		}
