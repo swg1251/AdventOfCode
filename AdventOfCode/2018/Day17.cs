@@ -128,7 +128,7 @@ namespace AdventOfCode.Year2018
 										Material downLeftTwo;
 										while (grid[y].TryGetValue(x2, out downLeftTwo) && (downLeftTwo == Material.Sand || downLeftTwo == Material.RunningWater))
 										{
-											// if left-down is already running, move on
+											// if right-down is already running, move on
 											if (grid[y + 1][x2 + 1] == Material.RunningWater)
 											{
 												settled = false;
@@ -156,7 +156,7 @@ namespace AdventOfCode.Year2018
 										Material downRightTwo;
 										while (grid[y].TryGetValue(x2, out downRightTwo) && (downRightTwo == Material.Sand || downRightTwo == Material.RunningWater))
 										{
-											// if right-down is already running, move on
+											// if left-down is already running, move on
 											if (grid[y + 1][x2 - 1] == Material.RunningWater)
 											{
 												settled = false;
