@@ -21,13 +21,13 @@ namespace AdventOfCode.Year2018
 			Console.WriteLine($"After 1 billion generations (part two), the score is {GetResourceValue(acres, 1000000000)}");
 		}
 
-		public int GetResourceValue(List<List<Acre>> acres, long generations)
+		public int GetResourceValue(List<List<Acre>> acres, int generations)
 		{
 			// track states we've seen so we can find a pattern for part two
 			var seenPatterns = new List<string>();
 			var cycleFound = false;
 
-			for (long i = 0; i < generations; i++)
+			for (int i = 0; i < generations; i++)
 			{
 				var newAcres = new List<List<Acre>>();
 				var acreString = string.Empty;
