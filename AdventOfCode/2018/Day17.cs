@@ -100,86 +100,88 @@ namespace AdventOfCode.Year2018
 				{
 					for (int x = minX; x <= maxX; x++)
 					{
-						if (grid[y][x] == Material.RunningWater)
+						if (grid[y][x] != Material.RunningWater)
 						{
-							// expand running water downwards
-							var y2 = y + 1;
-							Dictionary<int, Material> down;
-							while (grid.TryGetValue(y2, out down) && down[x] == Material.Sand)
+							continue;
+						}
+
+						// expand running water downwards
+						var y2 = y + 1;
+						Dictionary<int, Material> down;
+						while (grid.TryGetValue(y2, out down) && down[x] == Material.Sand)
+						{
+							grid[y2][x] = Material.RunningWater;
+							y2++;
+						}
+
+						// if below is settled
+						Dictionary<int, Material> below;
+						if (grid.TryGetValue(y + 1, out below) &&
+							(below[x] == Material.Clay || below[x] == Material.StandingWater))
+						{
+							var settled = true;
+
+							Material downLeft;
+							if (grid[y].TryGetValue(x - 1, out downLeft))
 							{
-								grid[y2][x] = Material.RunningWater;
-								y2++;
+								// left is sand - expand left
+								if (downLeft == Material.Sand || downLeft == Material.RunningWater)
+								{
+									var x2 = x - 1;
+									Material downLeftTwo;
+									while (grid[y].TryGetValue(x2, out downLeftTwo) && (downLeftTwo == Material.Sand || downLeftTwo == Material.RunningWater))
+									{
+										// if right-down is already running, move on
+										if (grid[y + 1][x2 + 1] == Material.RunningWater)
+										{
+											settled = false;
+											break;
+										}
+										grid[y][x2] = Material.RunningWater;
+
+										// sand below - not settled
+										if (grid.ContainsKey(y + 1) && (grid[y + 1][x2] == Material.Sand))
+										{
+											settled = false;
+											break;
+										}
+										x2--;
+									}
+								}
 							}
-
-							// if below is settled
-							Dictionary<int, Material> below;
-							if (grid.TryGetValue(y + 1, out below) &&
-								(below[x] == Material.Clay || below[x] == Material.StandingWater))
+							Material downRight;
+							if (grid[y].TryGetValue(x + 1, out downRight))
 							{
-								var settled = true;
-
-								Material downLeft;
-								if (grid[y].TryGetValue(x - 1, out downLeft))
+								// right is sand - expand right
+								if (downRight == Material.Sand || downRight == Material.RunningWater)
 								{
-									// left is sand - expand left
-									if (downLeft == Material.Sand || downLeft == Material.RunningWater)
+									var x2 = x + 1;
+									Material downRightTwo;
+									while (grid[y].TryGetValue(x2, out downRightTwo) && (downRightTwo == Material.Sand || downRightTwo == Material.RunningWater))
 									{
-										var x2 = x - 1;
-										Material downLeftTwo;
-										while (grid[y].TryGetValue(x2, out downLeftTwo) && (downLeftTwo == Material.Sand || downLeftTwo == Material.RunningWater))
+										// if left-down is already running, move on
+										if (grid[y + 1][x2 - 1] == Material.RunningWater)
 										{
-											// if right-down is already running, move on
-											if (grid[y + 1][x2 + 1] == Material.RunningWater)
-											{
-												settled = false;
-												break;
-											}	
-											grid[y][x2] = Material.RunningWater;
+											settled = false;
+											break;
 
-											// sand below - not settled
-											if (grid.ContainsKey(y + 1) && (grid[y + 1][x2] == Material.Sand))
-											{
-												settled = false;
-												break;
-											}
-											x2--;
 										}
+										grid[y][x2] = Material.RunningWater;
+
+										// sand below - not settled
+										if (grid.ContainsKey(y + 1) && (grid[y + 1][x2] == Material.Sand))
+										{
+											settled = false;
+											break;
+										}
+										x2++;
 									}
 								}
-								Material downRight;
-								if (grid[y].TryGetValue(x + 1, out downRight))
-								{
-									// right is sand - expand right
-									if (downRight == Material.Sand || downRight == Material.RunningWater)
-									{
-										var x2 = x + 1;
-										Material downRightTwo;
-										while (grid[y].TryGetValue(x2, out downRightTwo) && (downRightTwo == Material.Sand || downRightTwo == Material.RunningWater))
-										{
-											// if left-down is already running, move on
-											if (grid[y + 1][x2 - 1] == Material.RunningWater)
-											{
-												settled = false;
-												break;
-
-											}
-											grid[y][x2] = Material.RunningWater;
-
-											// sand below - not settled
-											if (grid.ContainsKey(y + 1) && (grid[y + 1][x2] == Material.Sand))
-											{
-												settled = false;
-												break;
-											}
-											x2++;
-										}
-									}
-								}
-								// we are settled if expanding left AND right hit a wall
-								if (settled)
-								{
-									grid[y][x] = Material.StandingWater;
-								}
+							}
+							// we are settled if expanding left AND right hit a wall
+							if (settled)
+							{
+								grid[y][x] = Material.StandingWater;
 							}
 						}
 					}
