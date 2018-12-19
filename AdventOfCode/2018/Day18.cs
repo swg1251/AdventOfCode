@@ -11,22 +11,6 @@ namespace AdventOfCode.Year2018
 
 		public void GetInput()
 		{
-			/*
-			input = new List<string>
-			{
-				".#.#...|#.",
-				".....#|##|",
-				".|..|...#.",
-				"..|#.....#",
-				"#.#|||#|#|",
-				"...#.||...",
-				".|....|...",
-				"||...#|.#|",
-				"|.||||..|.",
-				"...#.|..|."
-			};
-			*/
-
 			input = File.ReadAllLines("2018/input/day18.txt").Where(l => !string.IsNullOrEmpty(l));
 		}
 
@@ -37,7 +21,7 @@ namespace AdventOfCode.Year2018
 			Console.WriteLine($"After 1 billion generations (part two), the score is {GetResourceValue(acres, 1000000000)}");
 		}
 
-		private int GetResourceValue(List<List<Acre>> acres, long generations)
+		public int GetResourceValue(List<List<Acre>> acres, long generations)
 		{
 			// track states we've seen so we can find a pattern for part two
 			var seenPatterns = new List<string>();
@@ -108,12 +92,10 @@ namespace AdventOfCode.Year2018
 							if (neighbors[Acre.Trees] >= 3)
 							{
 								newRow.Add(Acre.Trees);
-								rowString += Acre.Trees.ToString();
 							}
 							else
 							{
 								newRow.Add(Acre.Open);
-								rowString += Acre.Open.ToString();
 							}
 						}
 						else if (acres[y][x] == Acre.Trees)
@@ -121,12 +103,10 @@ namespace AdventOfCode.Year2018
 							if (neighbors[Acre.Lumberyard] >= 3)
 							{
 								newRow.Add(Acre.Lumberyard);
-								rowString += Acre.Lumberyard.ToString();
 							}
 							else
 							{
 								newRow.Add(Acre.Trees);
-								rowString += Acre.Trees.ToString();
 							}
 						}
 						else
@@ -134,18 +114,16 @@ namespace AdventOfCode.Year2018
 							if (neighbors[Acre.Lumberyard] >= 1 && neighbors[Acre.Trees] >= 1)
 							{
 								newRow.Add(Acre.Lumberyard);
-								rowString += Acre.Lumberyard.ToString();
 							}
 							else
 							{
 								newRow.Add(Acre.Open);
-								rowString += Acre.Open.ToString();
 							}
 						}
 					}
 
 					newAcres.Add(newRow);
-					acreString += rowString;
+					acreString += string.Join("", newRow.Select(a => a.ToString()));
 				}
 
 				acres = newAcres;
@@ -174,7 +152,7 @@ namespace AdventOfCode.Year2018
 			return trees * lumber;
 		}
 
-		private List<List<Acre>> GetAcres(IEnumerable<string> input)
+		public List<List<Acre>> GetAcres(IEnumerable<string> input)
 		{
 			var acres = new List<List<Acre>>();
 
