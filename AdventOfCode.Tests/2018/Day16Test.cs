@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace AdventOfCode.Tests.Year2018
 {
     public class Day16Test
     {
-		private List<string> scenario = new List<string>
+		private List<string> input = new List<string>
 		{
 			"Before: [3, 2, 1, 1]",
 			"9 2 1 2",
@@ -16,7 +17,8 @@ namespace AdventOfCode.Tests.Year2018
 		void Part_one_example()
 		{
 			var day16 = new AdventOfCode.Year2018.Day16();
-			var answer = day16.GetMatchingMethodCount(scenario);
+			var scenarios = day16.ProcessScenarios(input);
+			var answer = scenarios.First().validOps.Count;
 			Assert.Equal(3, answer);
 		}
     }
