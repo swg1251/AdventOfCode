@@ -11,23 +11,23 @@ namespace AdventOfCode.Year2018
 
 		public void GetInput()
 		{
-			input = "^ENWWW(NEEE|SSE(EE|N))$";
+			input = File.ReadAllLines("2018/input/day20.txt").Where(l => !string.IsNullOrEmpty(l)).First();
 		}
 
 		public void Solve()
 		{
 			var map = GetMap(input);
-			PrintMap(map);
+
+			var result = Search(map);
+			Console.WriteLine($"The shortest path to the farthest room (part one) is: {result.partOne}");
+			Console.WriteLine($"The amount of room with a shortest path of over 1000 doors is: {result.partTwo}");
 		}
 
 		public Dictionary<(int x, int y), Room> GetMap(string paths)
 		{
 			var room = new Room();
 			int x = 0, y = 0;
-			var grid = new Dictionary<(int x, int y), Room>
-			{
-				[(x, y)] = room
-			};
+			var grid = new Dictionary<(int x, int y), Room>{ [(x, y)] = room };
 			var positions = new Stack<(int x, int y)>();
 			positions.Push((x, y));
 
@@ -35,16 +35,19 @@ namespace AdventOfCode.Year2018
 			{
 				if (c == '(')
 				{
+					// Push current position to the stack so we can come back later
 					positions.Push((x, y));
 				}
 				else if (c == ')')
 				{
+					// Done exploring options for this group, go back to beginning of grouping (pop to remove)
 					var pos = positions.Pop();
 					x = pos.x;
 					y = pos.y;
 				}
 				else if (c == '|')
 				{
+					// Done with this option, go back to beginning of grouping (peek to preserve location)
 					var pos = positions.Peek();
 					x = pos.x;
 					y = pos.y;
@@ -111,37 +114,35 @@ namespace AdventOfCode.Year2018
 			return grid;
 		}
 
-		public void PrintMap(Dictionary<(int x, int y), Room> map)
+		public string GetPrintableMap(Dictionary<(int x, int y), Room> map)
 		{
 			var minX = map.Keys.Min(k => k.x);
 			var maxX = map.Keys.Max(k => k.x);
 			var minY = map.Keys.Min(k => k.y);
 			var maxY = map.Keys.Max(k => k.y);
 
-			var line = "#";
-			for (int x = minX; x < maxX; x++)
+			var grid = "#";
+			for (int x = minX; x <= maxX; x++)
 			{
-				line += "##";
+				grid += "##";
 			}
-			line += "#";
-			Console.WriteLine(line);
+			grid += "\r\n";
 
-			for (int y = minY - 1; y < maxY + 1; y++)
+			for (int y = minY; y <= maxY; y++)
 			{
 				var topLine = "#";
 				var bottomLine = "#";
 
-				for (int x = minX - 1; x < maxX + 1; x++)
+				for (int x = minX; x <= maxX; x++)
 				{
-					topLine += ".";
-					Room room;
-					if (!map.TryGetValue((x, y), out room) || room.Right == null)
+					topLine += (x == 0 && y == 0) ? "X" : ".";
+					if (!map.TryGetValue((x, y), out Room room) || room.Right == null)
 					{
-						topLine += '|';
+						topLine += '#';
 					}
 					else
 					{
-						topLine += '#';
+						topLine += '|';
 					}
 
 					if (room == null || room.Down == null)
@@ -152,22 +153,122 @@ namespace AdventOfCode.Year2018
 					{
 						bottomLine += "-";
 					}
+
+					bottomLine += "#";
 				}
 
-				topLine += "#";
-				bottomLine += "#";
-
-				Console.WriteLine(topLine);
-				Console.WriteLine(bottomLine);
+				grid += topLine + "\r\n";
+				grid += bottomLine + "\r\n";
 			}
+			return grid.TrimEnd(new char[] { '\n', '\r' });
+		}
 
-			line = "#";
-			for (int x = minX - 1; x < maxX + 1; x++)
+		public (int partOne, int partTwo) Search(Dictionary<(int x, int y), Room> map)
+		{
+			var distances = new Dictionary<(int x, int y), int>();
+			var state = new State
 			{
-				line += "##";
+				CurrentRoom = (0, 0, map[(0, 0)]),
+				Seen = new HashSet<(int x, int y)> { (0, 0) }
+			};
+
+			var states = new Queue<State>();
+			states.Enqueue(state);
+
+			while (states.Any())
+			{
+				state = states.Dequeue();
+				if (!distances.ContainsKey((state.CurrentRoom.x, state.CurrentRoom.y)))
+				{
+					// Haven't found a path to this room yet, min distance is current distance
+					distances[((state.CurrentRoom.x, state.CurrentRoom.y))] = state.Seen.Count - 1;
+				}
+				else
+				{
+					// Min distance to this room is either current distance, or a shorter path was already found
+					distances[((state.CurrentRoom.x, state.CurrentRoom.y))] =
+						Math.Min(distances[((state.CurrentRoom.x, state.CurrentRoom.y))], state.Seen.Count - 1);
+				}
+
+				if (state.CurrentRoom.room.Up != null)
+				{
+					if (!state.Seen.Contains((state.CurrentRoom.x, state.CurrentRoom.y - 1)))
+					{
+						var newState = new State
+						{
+							CurrentRoom = (state.CurrentRoom.x, state.CurrentRoom.y - 1, state.CurrentRoom.room.Up),
+							Seen = new HashSet<(int x, int y)>()
+						};
+
+						foreach (var seenPos in state.Seen)
+						{
+							newState.Seen.Add(seenPos);
+						}
+						newState.Seen.Add((state.CurrentRoom.x, state.CurrentRoom.y - 1));
+
+						states.Enqueue(newState);
+					}
+				}
+				if (state.CurrentRoom.room.Right != null)
+				{
+					if (!state.Seen.Contains((state.CurrentRoom.x + 1, state.CurrentRoom.y)))
+					{
+						var newState = new State
+						{
+							CurrentRoom = (state.CurrentRoom.x + 1, state.CurrentRoom.y, state.CurrentRoom.room.Right),
+							Seen = new HashSet<(int x, int y)>()
+						};
+
+						foreach (var seenPos in state.Seen)
+						{
+							newState.Seen.Add(seenPos);
+						}
+						newState.Seen.Add((state.CurrentRoom.x + 1, state.CurrentRoom.y));
+
+						states.Enqueue(newState);
+					}
+				}
+				if (state.CurrentRoom.room.Down != null)
+				{
+					if (!state.Seen.Contains((state.CurrentRoom.x, state.CurrentRoom.y + 1)))
+					{
+						var newState = new State
+						{
+							CurrentRoom = (state.CurrentRoom.x, state.CurrentRoom.y + 1, state.CurrentRoom.room.Down),
+							Seen = new HashSet<(int x, int y)>()
+						};
+
+						foreach (var seenPos in state.Seen)
+						{
+							newState.Seen.Add(seenPos);
+						}
+						newState.Seen.Add((state.CurrentRoom.x, state.CurrentRoom.y + 1));
+
+						states.Enqueue(newState);
+					}
+				}
+				if (state.CurrentRoom.room.Left != null)
+				{
+					if (!state.Seen.Contains((state.CurrentRoom.x - 1, state.CurrentRoom.y)))
+					{
+						var newState = new State
+						{
+							CurrentRoom = (state.CurrentRoom.x - 1, state.CurrentRoom.y, state.CurrentRoom.room.Left),
+							Seen = new HashSet<(int x, int y)>()
+						};
+
+						foreach (var seenPos in state.Seen)
+						{
+							newState.Seen.Add(seenPos);
+						}
+						newState.Seen.Add((state.CurrentRoom.x - 1, state.CurrentRoom.y));
+
+						states.Enqueue(newState);
+					}
+				}
 			}
-			line += "#";
-			Console.WriteLine(line);
+
+			return (distances.Values.Max(), distances.Values.Count(d => d >= 1000));
 		}
 
 		public class Room
@@ -176,6 +277,12 @@ namespace AdventOfCode.Year2018
 			public Room Right;
 			public Room Up;
 			public Room Down;
+		}
+
+		public class State
+		{
+			public (int x, int y, Room room) CurrentRoom;
+			public HashSet<(int x, int y)> Seen;
 		}
 	}
 }
