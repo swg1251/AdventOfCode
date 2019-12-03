@@ -39,4 +39,14 @@
     </None>
   </ItemGroup>
 
+	<ItemGroup>
+		<None Update="2019\input\**">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="2019\input\" />
+  </ItemGroup>
+
 </Project>
