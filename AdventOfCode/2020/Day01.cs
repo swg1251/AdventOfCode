@@ -58,7 +58,7 @@ namespace AdventOfCode.Year2020
 						if (expenses[i] + expenses[j] + expenses[k] == 2020)
 						{
 							var product = expenses[i] * expenses[j] * expenses[k];
-							Console.WriteLine($"Product of the three entries summing 2020 (part one) is: {product}");
+							Console.WriteLine($"Product of the three entries summing 2020 (part two) is: {product}");
 							return;
 						}
 					}
