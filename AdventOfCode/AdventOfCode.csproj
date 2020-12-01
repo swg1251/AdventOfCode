@@ -27,7 +27,7 @@
     </None>
   </ItemGroup>
 
-   <ItemGroup>
+  <ItemGroup>
     <None Update="2017\input\**">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -39,17 +39,17 @@
     </None>
   </ItemGroup>
 
-	<ItemGroup>
-		<None Update="2019\input\**">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-	</ItemGroup>
+  <ItemGroup>
+    <None Update="2019\input\**">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 
-	<ItemGroup>
-		<None Update="2020\input\**">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-	</ItemGroup>
+  <ItemGroup>
+    <None Update="2020\input\**">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <Folder Include="2019\input\" />
