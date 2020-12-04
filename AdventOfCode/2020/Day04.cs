@@ -106,9 +106,10 @@ namespace AdventOfCode.Year2020
 
 		private bool ValidHairColor(string color)
 		{
+			var validChars = "0123456789abcdef";
 			if (color.Length == 7)
 			{
-				return color[0] == '#' && color.Substring(1).All(char.IsLetterOrDigit);
+				return color[0] == '#' && color.Substring(1).All(c => validChars.Contains(c));
 			}
 
 			return false;
