@@ -37,6 +37,7 @@ namespace AdventOfCode.Year2020
 			// make sure the last one gets added
 			passports.Add(passport);
 		}
+
 		public void Solve()
 		{
 			var validPartOne = 0;
