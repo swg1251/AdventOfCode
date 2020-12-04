@@ -13,7 +13,7 @@ namespace AdventOfCode.Year2020
 		{
 			passports = new List<Dictionary<string, string>>();
 
-			var lines = File.ReadAllLines("2020/input/day04.txt");
+			var lines = File.ReadAllLines("2020/input/day4.txt");
 
 			var passport = new Dictionary<string, string>();
 
@@ -89,6 +89,11 @@ namespace AdventOfCode.Year2020
 
 		private bool ValidHeight(string height)
 		{
+			if (height.Length <= 2)
+			{
+				return false;
+			}
+
 			var unit = height.Substring(height.Length - 2);
 			var measure = Convert.ToInt32(height.Substring(0, height.Length - 2));
 
