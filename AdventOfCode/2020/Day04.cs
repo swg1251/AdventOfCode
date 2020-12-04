@@ -13,7 +13,7 @@ namespace AdventOfCode.Year2020
 		{
 			passports = new List<Dictionary<string, string>>();
 
-			var lines = File.ReadAllLines("2020/input/day4.txt");
+			var lines = File.ReadAllLines("2020/input/day04.txt");
 
 			var passport = new Dictionary<string, string>();
 
