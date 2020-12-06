@@ -41,45 +41,16 @@ namespace AdventOfCode.Year2020
 
 		private Seat GetSeat(string boardingPass)
 		{
-			var rows = new List<int>();
-			for (int i = 0; i < 128; i++)
-			{
-				rows.Add(i);
-			}
+			var rowBinary = boardingPass.Substring(0, 7).Replace('F', '0').Replace('B', '1');
+			var colBinary = boardingPass.Substring(7).Replace('L', '0').Replace('R', '1');
 
-			var cols = new List<int>();
-			for (int i = 0; i < 8; i++)
-			{
-				cols.Add(i);
-			}
-
-			foreach (var c in boardingPass)
-			{
-				if (c == 'F')
-				{
-					rows = rows.Take(rows.Count / 2).ToList();
-				}
-				else if (c == 'B')
-				{
-					rows = rows.TakeLast(rows.Count / 2).ToList();
-				}
-				else if (c == 'L')
-				{
-					cols = cols.Take(cols.Count / 2).ToList();
-				}
-				else if (c == 'R')
-				{
-					cols = cols.TakeLast(cols.Count / 2).ToList();
-				}
-			}
-
-			return new Seat(rows[0], cols[0]);
+			return new Seat(Convert.ToInt32(rowBinary, 2), Convert.ToInt32(colBinary, 2));
 		}
 
 		internal class Seat
 		{
-			public int Row;
-			public int Col;
+			public int Row { get; set; }
+			public int Col { get; set; }
 			public int SeatId => Row * 8 + Col;
 
 			public Seat(int row, int col)
