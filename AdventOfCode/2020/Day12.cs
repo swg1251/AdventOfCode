@@ -84,24 +84,19 @@ namespace AdventOfCode.Year2020
 
 		private Direction GetDirection(char c)
 		{
-			if (c == 'N')
+			switch (c)
 			{
-				return Direction.North;
+				case 'N':
+					return Direction.North;
+				case 'E':
+					return Direction.East;
+				case 'S':
+					return Direction.South;
+				case 'W':
+					return Direction.West;
+				default:
+					throw new Exception($"Bad direction: {c}");
 			}
-			if (c == 'E')
-			{
-				return Direction.East;
-			}
-			if (c == 'S')
-			{
-				return Direction.South;
-			}
-			if (c == 'W')
-			{
-				return Direction.West;
-			}
-
-			throw new Exception($"Bad direction: {c}");
 		}
 
 		internal class Ship
