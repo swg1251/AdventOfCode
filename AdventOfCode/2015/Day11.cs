@@ -27,7 +27,7 @@ namespace AdventOfCode.Year2015
 			{
 				password = Increment(password);
 			}
-			Console.WriteLine($"The first valid password (part one) is: {password}");
+			Console.WriteLine($"The first valid password (part two) is: {password}");
 		}
 
 		private string Increment(string pass)

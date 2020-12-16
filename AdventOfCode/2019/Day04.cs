@@ -30,7 +30,7 @@ namespace AdventOfCode.Year2019
 			}
 
 			Console.WriteLine($"The number of valid passwords (part one) is: {validPasswordsPartOne}");
-			Console.WriteLine($"The number of valid passwords (part one) is: {validPasswordsPartTwo}");
+			Console.WriteLine($"The number of valid passwords (part two) is: {validPasswordsPartTwo}");
 		}
 
 		private bool IsValid(string password, bool partTwo = false)

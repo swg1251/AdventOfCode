@@ -35,8 +35,8 @@ namespace AdventOfCode.Year2016
             }
             CountActivePixels();
 
-            Console.WriteLine($"There are {ActivatedPixelCount} pixels on (part 1).");
-            Console.WriteLine("Part 2 - the screen display:");
+            Console.WriteLine($"There are {ActivatedPixelCount} pixels on (part one).");
+            Console.WriteLine("Part two - the screen display:");
             PrintScreen();
         }
 

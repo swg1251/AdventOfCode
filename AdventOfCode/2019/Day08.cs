@@ -74,7 +74,7 @@ namespace AdventOfCode.Year2019
 				}
 			}
 
-			Console.WriteLine();
+			Console.WriteLine("Part two:");
 
 			for (int y = 0; y < height; y++)
 			{

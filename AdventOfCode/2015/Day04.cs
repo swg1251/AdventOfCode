@@ -39,6 +39,7 @@ namespace AdventOfCode.Year2015
 						if (hash.StartsWith("000000"))
 						{
 							Console.WriteLine($"The first number which produces a 6 zero-leading hash (part two) is {i}");
+							return;
 						}
 					}
 				}

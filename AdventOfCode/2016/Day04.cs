@@ -33,11 +33,11 @@ namespace AdventOfCode.Year2016
         public void Solve()
 		{
 			var validRoomsSectorSum = rooms.Where(r => r.IsValid()).Sum(r => r.SectorID);
-			Console.WriteLine($"The sum of valid sector IDs (part 1) is: {validRoomsSectorSum}");
+			Console.WriteLine($"The sum of valid sector IDs (part one) is: {validRoomsSectorSum}");
 
 			GetDecryptedRoomNames();
 			var northPoleStorageRoom = rooms.Single(rn => rn.DecryptedName == "northpoleobjectstorage");
-			Console.WriteLine($"The sector ID of the \"northpoleobjectstorage\" room (part 2) is: {northPoleStorageRoom.SectorID}");
+			Console.WriteLine($"The sector ID of the \"northpoleobjectstorage\" room (part two) is: {northPoleStorageRoom.SectorID}");
 		}
 
 		

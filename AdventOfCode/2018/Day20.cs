@@ -20,7 +20,7 @@ namespace AdventOfCode.Year2018
 
 			var result = Search(map);
 			Console.WriteLine($"The shortest path to the farthest room (part one) is: {result.partOne}");
-			Console.WriteLine($"The amount of room with a shortest path of over 1000 doors is: {result.partTwo}");
+			Console.WriteLine($"The amount of room with a shortest path of over 1000 doors (part two) is: {result.partTwo}");
 		}
 
 		public Dictionary<(int x, int y), Room> GetMap(string paths)

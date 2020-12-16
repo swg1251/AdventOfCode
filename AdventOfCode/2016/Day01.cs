@@ -35,9 +35,9 @@ namespace AdventOfCode.Year2016
 				UpdatePosition(Convert.ToInt32(instruction.Substring(1)));
 			}
 			var distance = CalculateDistance(position);
-			Console.WriteLine($"The distance to the Easter Bunny Headquarters (part 1) is: {distance}");
+			Console.WriteLine($"The distance to the Easter Bunny Headquarters (part one) is: {distance}");
 			var realDistance = CalculateDistance(realPosition);
-			Console.WriteLine($"The real distance to the Easter Bunny Headquarters (part 2) is: {realDistance}");
+			Console.WriteLine($"The real distance to the Easter Bunny Headquarters (part two) is: {realDistance}");
 		}
 
 		private void UpdateDirection(char turn)

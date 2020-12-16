@@ -49,7 +49,7 @@ namespace AdventOfCode.Year2016
 			var product = bins.First(b => b.Id == 0).Chips[0] * 
 							bins.First(b => b.Id == 1).Chips[0] * 
 							bins.First(b => b.Id == 2).Chips[0];
-			Console.WriteLine($"The product of the first chip in bins 0, 1, 2 is {product} (part 2)");
+			Console.WriteLine($"The product of the first chip in bins 0, 1, 2 is {product} (part two)");
 		}
 
 		private void GiveValueToBot(string instruction)
@@ -74,7 +74,7 @@ namespace AdventOfCode.Year2016
 
 				if (lowChip == 17 && highChip == 61)
 				{
-					Console.WriteLine($"Bot {bot.Id} compares chips 17 and 61 (part 1)");
+					Console.WriteLine($"Bot {bot.Id} compares chips 17 and 61 (part one)");
 				}
 
 				if (instructionParts[5] == "bot")

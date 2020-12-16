@@ -26,8 +26,8 @@ namespace AdventOfCode.Year2016
 		public void Solve()
 		{
 			GetPasswords();
-			Console.WriteLine($"The password (part 1) is: {password.Substring(0, 8)}");
-			Console.WriteLine($"The password (part 2) is: {new string(password2)}");
+			Console.WriteLine($"The password (part one) is: {password.Substring(0, 8)}");
+			Console.WriteLine($"The password (part two) is: {new string(password2)}");
 		}
 
 		private void GetPasswords()

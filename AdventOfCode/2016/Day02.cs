@@ -58,8 +58,8 @@ namespace AdventOfCode.Year2016
 				combination += keypad[position.Y][position.X];
 				combination2 += keypad2[position2.Y][position2.X];
 			}
-			Console.WriteLine($"The combination (part 1) is: {combination}");
-			Console.WriteLine($"The combination (part 2) is: {combination2}");
+			Console.WriteLine($"The combination (part one) is: {combination}");
+			Console.WriteLine($"The combination (part two) is: {combination2}");
 		}
 
 		private void ProcessMove(char move)

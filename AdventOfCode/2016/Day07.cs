@@ -27,8 +27,8 @@ namespace AdventOfCode.Year2016
 
         public void Solve()
 		{
-			Console.WriteLine($"The number of IPs supporting TLS (part 1) is {ipAddressses.Count(ip => ip.SupportsTls())}");
-			Console.WriteLine($"The number of IPs supporting SSL (part 2) is {ipAddressses.Count(ip => ip.SupportsSsl())}");
+			Console.WriteLine($"The number of IPs supporting TLS (part one) is {ipAddressses.Count(ip => ip.SupportsTls())}");
+			Console.WriteLine($"The number of IPs supporting SSL (part two) is {ipAddressses.Count(ip => ip.SupportsSsl())}");
 		}
 
         internal class IpAddress

@@ -26,11 +26,11 @@ namespace AdventOfCode.Year2016
 		{
 			GetTriangles();
 			var validTriangles = triangles.Count(t => IsValid(t));
-			Console.WriteLine($"The number of valid triangles (part 1) is: {validTriangles}");
+			Console.WriteLine($"The number of valid triangles (part one) is: {validTriangles}");
 
 			GetTrianglesPart2();
 			var validTriangles2 = triangles2.Count(t => IsValid(t));
-			Console.WriteLine($"The number of valid triangles (part 2) is: {validTriangles2}");
+			Console.WriteLine($"The number of valid triangles (part two) is: {validTriangles2}");
 		}
 
 		private void GetTriangles()

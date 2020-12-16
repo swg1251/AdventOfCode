@@ -52,8 +52,8 @@ namespace AdventOfCode.Year2016
         public void Solve()
 		{
 			GetMessages();
-			Console.WriteLine($"The message (part 1) is: {new string(message)}");
-			Console.WriteLine($"The message (part 2) is: {new string(message2)}");
+			Console.WriteLine($"The message (part one) is: {new string(message)}");
+			Console.WriteLine($"The message (part two) is: {new string(message2)}");
 		}
 
 		private void GetMessages()

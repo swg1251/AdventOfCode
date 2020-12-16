@@ -20,7 +20,7 @@ namespace AdventOfCode.Year2015
 			Console.WriteLine($"The first house to get at least {input} presents (part one) is: {partOne}");
 
 			var partTwo = GetHouse(input, true);
-			Console.WriteLine($"The first house to get at least {input} presents (part one) is: {partTwo}");
+			Console.WriteLine($"The first house to get at least {input} presents (part two) is: {partTwo}");
 		}
 
 		public int GetHouse(int presentTarget, bool partTwo = false)
