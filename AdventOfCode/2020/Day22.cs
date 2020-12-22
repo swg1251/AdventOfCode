@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace AdventOfCode.Year2020
 {
@@ -9,14 +10,14 @@ namespace AdventOfCode.Year2020
 	{
 		private Queue<int> playerOneCardsInput;
 		private Queue<int> playerTwoCardsInput;
-		private Dictionary<string, int> knownScores;
+		private Dictionary<(int, int), int> knownScores;
 
 		public void GetInput()
 		{
 			var lines = File.ReadAllLines("2020/input/day22.txt").Where(l => !string.IsNullOrEmpty(l)).ToList();
 			playerOneCardsInput = new Queue<int>();
 			playerTwoCardsInput = new Queue<int>();
-			knownScores = new Dictionary<string, int>();
+			knownScores = new Dictionary<(int, int), int>();
 			var playerTwo = false;
 
 			foreach (var line in lines.Skip(1))
@@ -52,18 +53,19 @@ namespace AdventOfCode.Year2020
 		// returns positive score if player one wins, negative if player two wins
 		private int GetWinningScore(Queue<int> playerOneCards, Queue<int> playerTwoCards, bool partTwo)
 		{
-			var baseGameString = GetGameString(playerOneCards, playerTwoCards);
-			if (knownScores.TryGetValue(baseGameString, out int knownScore))
+			var playerOneHashCode = GetSequenceHashCode(playerOneCards);
+			var playerTwoHashCode = GetSequenceHashCode(playerTwoCards);
+			if (knownScores.TryGetValue((playerOneHashCode, playerTwoHashCode), out int knownScore))
 			{
 				return knownScore;
 			}
 
-			var seenGames = new HashSet<string>();
+			var seenGames = new HashSet<(int, int)>();
 			var infiniteRecursionDetected = false;
 
 			while (playerOneCards.Any() && playerTwoCards.Any())
 			{
-				if (!seenGames.Add(GetGameString(playerOneCards, playerTwoCards)))
+				if (!seenGames.Add((GetSequenceHashCode(playerOneCards), GetSequenceHashCode(playerTwoCards))))
 				{
 					infiniteRecursionDetected = true;
 					break;
@@ -110,13 +112,17 @@ namespace AdventOfCode.Year2020
 				score *= -1;
 			}
 
-			knownScores[baseGameString] = score;
+			knownScores[(playerOneHashCode, playerTwoHashCode)] = score;
 			return score;
 		}
 
-		private string GetGameString(Queue<int> playerOneCards, Queue<int> playerTwoCards)
+		public static int GetSequenceHashCode<T>(IEnumerable<T> sequence)
 		{
-			return string.Join(':', string.Join(',', playerOneCards), string.Join(',', playerTwoCards));
+			const int seed = 487;
+			const int modifier = 31;
+
+			return sequence.Aggregate(seed, (current, item) =>
+				(current * modifier) + item.GetHashCode());
 		}
 	}
 }
