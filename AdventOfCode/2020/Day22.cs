@@ -52,22 +52,20 @@ namespace AdventOfCode.Year2020
 		// returns positive score if player one wins, negative if player two wins
 		private int GetWinningScore(Queue<int> playerOneCards, Queue<int> playerTwoCards, bool partTwo)
 		{
-			var gameString = string.Join(',', string.Join(',', playerOneCards), string.Join(',', playerTwoCards));
-			if (knownScores.TryGetValue(gameString, out int knownScore))
+			var baseGameString = string.Join(':', string.Join(',', playerOneCards), string.Join(',', playerTwoCards));
+			if (knownScores.TryGetValue(baseGameString, out int knownScore))
 			{
 				return knownScore;
 			}
 
-			var seenDecksPlayerOne = new HashSet<string>();
-			var seenDecksPlayerTwo = new HashSet<string>();
+			var seenGames = new HashSet<string>();
 			var infiniteRecursionDetected = false;
 
 			while (playerOneCards.Any() && playerTwoCards.Any())
 			{
-				var playerOneDeckString = string.Join(',', playerOneCards);
-				var playerTwoDeckString = string.Join(',', playerTwoCards);
+				var gameString = string.Join(':', string.Join(',', playerOneCards), string.Join(',', playerTwoCards));
 
-				if (!seenDecksPlayerOne.Add(playerOneDeckString) && !seenDecksPlayerTwo.Add(playerTwoDeckString))
+				if (!seenGames.Add(gameString))
 				{
 					infiniteRecursionDetected = true;
 					break;
@@ -114,7 +112,7 @@ namespace AdventOfCode.Year2020
 				score *= -1;
 			}
 
-			knownScores[gameString] = score;
+			knownScores[baseGameString] = score;
 			return score;
 		}
 	}
