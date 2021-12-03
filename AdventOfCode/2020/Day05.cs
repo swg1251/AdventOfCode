@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 
 namespace AdventOfCode.Year2020
@@ -11,7 +10,7 @@ namespace AdventOfCode.Year2020
 
 		public void GetInput()
 		{
-			boardingPasses = File.ReadAllLines("2020/input/day05.txt").Where(l => !string.IsNullOrEmpty(l));
+			boardingPasses = InputHelper.GetStringsFromInput(2020, 5);
 		}
 
 		public void Solve()

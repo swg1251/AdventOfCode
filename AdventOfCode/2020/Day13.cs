@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 
 namespace AdventOfCode.Year2020
@@ -12,7 +11,7 @@ namespace AdventOfCode.Year2020
 
 		public void GetInput()
 		{
-			var lines = File.ReadAllLines("2020/input/day13.txt").Where(l => !string.IsNullOrEmpty(l)).ToList();
+			var lines = InputHelper.GetStringsFromInput(2020, 13);
 			timestamp = Convert.ToInt32(lines[0]);
 
 			buses = new List<Bus>();

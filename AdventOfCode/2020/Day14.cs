@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 
 namespace AdventOfCode.Year2020
@@ -13,7 +12,7 @@ namespace AdventOfCode.Year2020
 
 		public void GetInput()
 		{
-			lines = File.ReadAllLines("2020/input/day14.txt").Where(l => !string.IsNullOrEmpty(l)).ToList();
+			lines = InputHelper.GetStringsFromInput(2020, 14);
 			valuesPartOne = new Dictionary<long, long>();
 			valuesPartTwo = new Dictionary<long, long>();
 		}

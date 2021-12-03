@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 
 namespace AdventOfCode.Year2020
@@ -11,10 +10,7 @@ namespace AdventOfCode.Year2020
 
 		public void GetInput()
 		{
-			adapters = File.ReadAllLines("2020/input/day10.txt")
-				.Where(l => !string.IsNullOrEmpty(l))
-				.Select(l => Convert.ToInt32(l))
-				.ToList();
+			adapters = InputHelper.GetIntegersFromInput(2020, 10);
 		}
 
 		public void Solve()

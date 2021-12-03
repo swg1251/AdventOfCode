@@ -14,6 +14,13 @@ namespace AdventOfCode
 			return lines.Select(l => Convert.ToInt32(l)).ToList();
 		}
 
+		public static List<long> GetLongIntegersFromInput(int year, int day)
+		{
+			var dayStr = day > 9 ? $"day{day}" : $"day0{day}";
+			var lines = File.ReadAllLines($"{year}/input/{dayStr}.txt").Where(l => !string.IsNullOrEmpty(l));
+			return lines.Select(l => Convert.ToInt64(l)).ToList();
+		}
+
 		public static List<string> GetStringsFromInput(int year, int day)
 		{
 			var dayStr = day > 9 ? $"day{day}" : $"day0{day}";
