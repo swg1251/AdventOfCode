@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 
 namespace AdventOfCode.Year2021
 {
@@ -11,7 +9,7 @@ namespace AdventOfCode.Year2021
 
 		public void GetInput()
 		{
-			instructions = File.ReadAllLines("2021/input/day02.txt").Where(l => !string.IsNullOrEmpty(l)).ToList();
+			instructions = InputHelper.GetStringsFromInput(2021, 2);
 		}
 
 		public void Solve()
