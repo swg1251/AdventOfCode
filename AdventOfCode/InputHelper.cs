@@ -14,6 +14,13 @@ namespace AdventOfCode
 			return lines.Select(l => Convert.ToInt32(l)).ToList();
 		}
 
+		public static List<int> GetIntegersFromCommaSeparatedInput(int year, int day)
+		{
+			var dayStr = day > 9 ? $"day{day}" : $"day0{day}";
+			var line = File.ReadAllLines($"{year}/input/{dayStr}.txt").First();
+			return line.Split(',').Select(l => Convert.ToInt32(l)).ToList();
+		}
+
 		public static List<long> GetLongIntegersFromInput(int year, int day)
 		{
 			var dayStr = day > 9 ? $"day{day}" : $"day0{day}";
