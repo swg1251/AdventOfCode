@@ -64,7 +64,7 @@ namespace AdventOfCode.Year2021
 					}
 					else
 					{
-						canVisit = !state.Visited.Contains(cave) || !IsLower(cave);
+						canVisit = !IsLower(cave) || !state.Visited.Contains(cave);
 					}
 
 					if (canVisit)
