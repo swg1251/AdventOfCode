@@ -59,7 +59,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="2019\input\" />
+    <None Update="2022\input\**">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
