@@ -22,7 +22,7 @@ namespace AdventOfCode.Year2022
 		private int GetFirstMarkerIndex(string datastream, int markerLength)
 		{
 			var potentialMarker = new Queue<char>(datastream.Substring(0, markerLength));
-			for (int i = markerLength; i < datastream.Length + markerLength; i++)
+			for (int i = markerLength; i < datastream.Length; i++)
 			{
 				if (potentialMarker.Distinct().Count() == markerLength)
 				{
