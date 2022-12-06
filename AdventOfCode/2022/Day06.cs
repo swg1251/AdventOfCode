@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace AdventOfCode.Year2022
@@ -20,13 +21,15 @@ namespace AdventOfCode.Year2022
 
 		private int GetFirstMarkerIndex(string datastream, int markerLength)
 		{
-			for (int i = 0; i < datastream.Length + markerLength; i++)
+			var potentialMarker = new Queue<char>(datastream.Substring(0, markerLength));
+			for (int i = markerLength; i < datastream.Length + markerLength; i++)
 			{
-				var potentialMarker = datastream.Substring(i, markerLength);
 				if (potentialMarker.Distinct().Count() == markerLength)
 				{
-					return i + markerLength;
+					return i;
 				}
+				potentialMarker.Dequeue();
+				potentialMarker.Enqueue(datastream[i]);
 			}
 			throw new Exception($"Failed to find marker of length {markerLength}");
 		}
