@@ -48,7 +48,7 @@ namespace AdventOfCode.Year2021
 			Dijkstra(risksPartTwo, true);
 		}
 
-		public void Dijkstra(List<List<int>> risks, bool partTwo = false)
+		private void Dijkstra(List<List<int>> risks, bool partTwo = false)
 		{
 			var height = risks.Count;
 			var width = risks.First().Count;
