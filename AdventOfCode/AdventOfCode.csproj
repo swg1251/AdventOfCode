@@ -64,4 +64,10 @@
     </None>
   </ItemGroup>
 
+	<ItemGroup>
+		<None Update="2023\input\**">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+
 </Project>
